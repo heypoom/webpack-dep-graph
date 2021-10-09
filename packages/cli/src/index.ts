@@ -224,7 +224,7 @@ async function main() {
       const moduleByPath = graph.nodesById.get(moduleIdByPath)
       if (!moduleByPath) throw new Error('what the fuck')
 
-      const action = isExport ? 'exported' : 'imported'
+      const action = isExport ? 're-exported' : 'imported'
       console.log(`  ${action} by ${moduleByPath.absolutePath}`)
     }
   }
