@@ -140,11 +140,9 @@ async function main() {
     const id = v4()
 
     const relativePath = cleanupModuleName(module.name)
+    const absolutePath = getAbsolutePath(module, prefix)
 
     graph.nodeIdByRelativePath.set(relativePath, id)
-
-    const absolutePath = getAbsolutePath(module, prefix)
-    // console.debug(`registered ${absolutePath}.`)
 
     graph.nodesById.set(id, {
       id,
@@ -182,21 +180,11 @@ async function main() {
       const moduleName = cleanupModuleName(reason.resolvedModule)
 
       // Ignore side effect evaluation.
-      if (reason.type.includes("side effect")) {
-        continue
-      }
+      if (reason.type.includes("side effect")) continue
 
       // Mark dependent as resolved, so we don't need to resolve multiple times.
       if (resolvedDependents.has(moduleName)) continue
       resolvedDependents.set(moduleName, true)
-
-      let isExport = false
-
-      if (reason.type.includes("export imported specifier")) {
-        isExport = true
-      } else if (reason.type.includes("import specifier")) {
-        // ...
-      }
 
       // Resolve module path to module identifier in the registry.
       const moduleIdByPath = graph.nodeIdByRelativePath.get(moduleName)
@@ -209,7 +197,10 @@ async function main() {
       const moduleByPath = graph.nodesById.get(moduleIdByPath)
       if (!moduleByPath) throw new Error("what the fuck")
 
+      // Detect if the module is a being re-exported.
+      const isExport = reason.type.includes("export imported specifier")
       const action = isExport ? "re-exported" : "imported"
+
       console.log(`  ${action} by ${moduleByPath.absolutePath}`)
     }
 
