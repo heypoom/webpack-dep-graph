@@ -223,15 +223,6 @@ async function main() {
     }
 
   }
-
-  // Construct graph edges from the resolved modules
-  // for (const module of graph.nodesById.values()) {
-  //   const dependents = module.dependentIds.map(id => graph.nodesById.get(id)).filter(exists)
-
-  //   if (dependents.length > 0) {
-  //     console.log(`deps for ${module.absolutePath} =`, dependents.map(m => m?.absolutePath))
-  //   }
-  // }
 }
 
 main()
