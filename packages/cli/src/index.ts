@@ -1,6 +1,7 @@
 import fs from "fs"
 import { v4 } from "uuid"
 import { gray, yellow, green } from "colorette"
+import graphviz from "graphviz"
 
 interface Module {
   id: string
@@ -223,7 +224,7 @@ async function main() {
       const { absolutePath } = consumerModule
 
       if (isExport) {
-        console.log(green(`re-exported by ${absolutePath}`))
+        console.log(green(`  re-exported by ${absolutePath}`))
         summary.exports++
 
         continue
@@ -231,7 +232,7 @@ async function main() {
 
       graph.addDependency(consumerModule.id, module.id)
 
-      console.log(`imported by ${absolutePath}`)
+      console.log(`  imported by ${absolutePath}`)
       summary.imports++
     }
 
@@ -253,6 +254,8 @@ async function main() {
 
   console.log(`\n------- PHASE 3 ------\n`)
 
+  const totalCount = { nodes: 0, edges: 0 }
+
   const deps: Record<string, string[]> = {}
   const toPath = (id: string) => graph.nodesById.get(id)?.absolutePath ?? ""
 
@@ -261,6 +264,23 @@ async function main() {
   }
 
   await fs.promises.writeFile("./deps.json", JSON.stringify(deps, null, 2))
+
+  const g = graphviz.digraph("G")
+
+  for (const consumerPath in deps) {
+    const n = g.addNode(consumerPath, { color: "blue" })
+    totalCount.nodes++
+
+    const dependencies = deps[consumerPath]
+    for (const dep of dependencies) {
+      g.addEdge(n, dep, { color: "red" })
+      totalCount.edges++
+    }
+  }
+
+  await fs.promises.writeFile("./deps.dot", g.to_dot())
+
+  console.log(totalCount)
 }
 
 main()

@@ -159,3 +159,5 @@ dist
 
 webpack-stats.json
 deps.json
+deps.dot
+deps.png
