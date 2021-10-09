@@ -195,14 +195,14 @@ async function main() {
       }
 
       // Resolve module id to module
-      const moduleByPath = graph.nodesById.get(moduleIdByPath)
-      if (!moduleByPath) throw new Error("what the fuck")
+      const module = graph.nodesById.get(moduleIdByPath)
+      if (!module) throw new Error("what the fuck")
 
       // Detect if the module is a being re-exported.
       const isExport = reason.type.includes("export imported specifier")
       const action = isExport ? "re-exported" : "imported"
 
-      let log = `  ${action} by ${moduleByPath.absolutePath}`
+      let log = `  ${action} by ${module.absolutePath}`
       if (isExport) log = green(log)
       console.log(log)
 
