@@ -27,6 +27,7 @@ Running `webpack-dep-graph` without any arguments will start the command line in
 
 ## Prior Work
 
+- https://github.com/pahen/madge (Maintained, does not use webpack-stats.json)
 - https://github.com/g0t4/webpack-stats-graph (Unmaintained)
-- https://github.com/pahen/madge
+- https://github.com/jantimon/webpack-dependency-stats (Unmaintained)
 
