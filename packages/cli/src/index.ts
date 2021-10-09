@@ -115,12 +115,12 @@ class ModuleGraph {
     return module
   }
 
-  addDependency(parentId: string, childId: string) {
-    if (!this.dependenciesById.has(parentId)) {
-      this.dependenciesById.set(parentId, new Set())
+  addDependency(consumerId: string, dependencyId: string) {
+    if (!this.dependenciesById.has(consumerId)) {
+      this.dependenciesById.set(consumerId, new Set())
     }
 
-    this.dependenciesById.get(parentId)?.add(childId)
+    this.dependenciesById.get(consumerId)?.add(dependencyId)
   }
 }
 
@@ -194,10 +194,10 @@ async function main() {
 
     const relativePath = cleanupModuleName(webpackModule.name)
 
-    const parentModule = graph.byRelativePath(relativePath)
-    if (!parentModule) throw new Error("cannot lookup by relative path")
+    const module = graph.byRelativePath(relativePath)
+    if (!module) throw new Error("cannot lookup by relative path")
 
-    console.log(yellow(`module ${parentModule.absolutePath}`))
+    console.log(yellow(`module ${module.absolutePath}`))
 
     const reasons = webpackModule?.reasons?.filter((m) =>
       isAppKey(m.resolvedModule)
@@ -214,13 +214,13 @@ async function main() {
       if (resolvedDependents.has(moduleName)) continue
       resolvedDependents.set(moduleName, true)
 
-      // Resolve module path to module identifier in the registry.
-      const childModule = graph.byRelativePath(moduleName)
-      if (!childModule) throw new Error("cannot lookup module by relative path")
+      // Resolve the module that utilizes/consumes the current module.
+      const consumerModule = graph.byRelativePath(moduleName)
+      if (!consumerModule) continue
 
       // Detect if the module is a being re-exported.
       const isExport = reason.type.includes("export imported specifier")
-      const { absolutePath } = childModule
+      const { absolutePath } = consumerModule
 
       if (isExport) {
         console.log(green(`re-exported by ${absolutePath}`))
@@ -229,7 +229,7 @@ async function main() {
         continue
       }
 
-      graph.addDependency(parentModule.id, childModule.id)
+      graph.addDependency(consumerModule.id, module.id)
 
       console.log(`imported by ${absolutePath}`)
       summary.imports++
