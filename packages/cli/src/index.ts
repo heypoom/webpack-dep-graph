@@ -1,6 +1,6 @@
-import fs from 'fs'
-import {v4} from 'uuid'
-import {rest, uniq} from 'lodash'
+import fs from "fs"
+import { v4 } from "uuid"
+import { rest, uniq } from "lodash"
 
 interface Module {
   id: string
@@ -13,7 +13,7 @@ interface Module {
 
   // File Name.
   fileName: string
-  
+
   // Relative File Path
   relativePath: string
 
@@ -73,10 +73,10 @@ interface WebpackStat {
 const isAppKey = (key: string) => !/cache|webpack|node_modules/.test(key)
 
 const cleanupModuleName = (name: string) => {
-  if (!name) return ''
-  if (!name.includes('+')) return name
+  if (!name) return ""
+  if (!name.includes("+")) return name
 
-  const [segment] = name.split(' + ') ?? []
+  const [segment] = name.split(" + ") ?? []
   if (!segment) return name
 
   return segment.trim()
@@ -98,7 +98,7 @@ class ModuleGraph {
 }
 
 const fileNameFromPath = (path: string) => {
-  const segments = path.split('/')
+  const segments = path.split("/")
 
   return segments[segments.length - 1]
 }
@@ -106,13 +106,13 @@ const fileNameFromPath = (path: string) => {
 const exists = <T>(x: T | null): x is T => !!x
 
 const getAbsolutePath = (module: WebpackModule, projectRoot: string) =>
-  cleanupModuleName(module.nameForCondition?.replace(projectRoot, ''))
+  cleanupModuleName(module.nameForCondition?.replace(projectRoot, ""))
 
 async function readConfiguration() {
   const startTime = Date.now()
-  const fileName = './webpack-stats.json'
+  const fileName = "./webpack-stats.json"
 
-  const statString = await fs.promises.readFile(fileName, 'utf-8')
+  const statString = await fs.promises.readFile(fileName, "utf-8")
   const stat: WebpackStat = JSON.parse(statString)
 
   console.debug(`loading stat.json takes ${Date.now() - startTime}ms.`)
@@ -124,16 +124,16 @@ async function main() {
   console.log(`\n------- PHASE 1 ------\n`)
 
   const stat = await readConfiguration()
-  const appModules = stat.modules.filter(m => isAppKey(m.name))
+  const appModules = stat.modules.filter((m) => isAppKey(m.name))
 
   const graph = new ModuleGraph()
   const startTime = Date.now()
 
-  const refModule = appModules.find(m => /node_modules/.test(m.issuer))
+  const refModule = appModules.find((m) => /node_modules/.test(m.issuer))
   if (!refModule) return
 
-  const [prefix] = refModule.issuer.split('node_modules')
-  console.log('[heuristic] absolute project root might be at', prefix)
+  const [prefix] = refModule.issuer.split("node_modules")
+  console.log("[heuristic] absolute project root might be at", prefix)
 
   // Construct graph nodes from the module.
   for (const module of appModules) {
@@ -156,7 +156,9 @@ async function main() {
     })
   }
 
-  console.debug(`creating module graph nodes takes ${Date.now() - startTime}ms.`)
+  console.debug(
+    `creating module graph nodes takes ${Date.now() - startTime}ms.`
+  )
 
   console.log(`\n------- PHASE 2 ------\n`)
 
@@ -167,19 +169,20 @@ async function main() {
     const relativePath = cleanupModuleName(webpackModule.name)
 
     const module = graph.byRelativePath(relativePath)
-    if (!module) throw new Error('cannot lookup by relative path')
+    if (!module) throw new Error("cannot lookup by relative path")
 
     console.log(`module ${module.absolutePath}`)
 
-    const reasons = webpackModule?.reasons
-      ?.filter(m => isAppKey(m.resolvedModule))
+    const reasons = webpackModule?.reasons?.filter((m) =>
+      isAppKey(m.resolvedModule)
+    )
 
     // Use the webpack import/export reason to resolve dependency chain
     for (const reason of reasons) {
       const moduleName = cleanupModuleName(reason.resolvedModule)
 
       // Ignore side effect evaluation.
-      if (reason.type.includes('side effect')) {
+      if (reason.type.includes("side effect")) {
         continue
       }
 
@@ -189,9 +192,9 @@ async function main() {
 
       let isExport = false
 
-      if (reason.type.includes('export imported specifier')) { 
+      if (reason.type.includes("export imported specifier")) {
         isExport = true
-      } else if (reason.type.includes('import specifier')) {
+      } else if (reason.type.includes("import specifier")) {
         // ...
       }
 
@@ -204,13 +207,14 @@ async function main() {
 
       // Resolve module id to module
       const moduleByPath = graph.nodesById.get(moduleIdByPath)
-      if (!moduleByPath) throw new Error('what the fuck')
+      if (!moduleByPath) throw new Error("what the fuck")
 
-      const action = isExport ? 're-exported' : 'imported'
+      const action = isExport ? "re-exported" : "imported"
       console.log(`  ${action} by ${moduleByPath.absolutePath}`)
     }
 
-    const issuers = webpackModule.issuerPath?.filter(issuer => isAppKey(issuer.name)) ?? []
+    const issuers =
+      webpackModule.issuerPath?.filter((issuer) => isAppKey(issuer.name)) ?? []
 
     for (const issuer of issuers) {
       const issuerModule = graph.byRelativePath(issuer.name)
@@ -221,9 +225,7 @@ async function main() {
 
       console.log(`  issued by ${issuerModule.absolutePath}`)
     }
-
   }
 }
 
 main()
-
