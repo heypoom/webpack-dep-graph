@@ -19,9 +19,6 @@ interface Module {
 
   // Absolute File Path
   absolutePath: string
-
-  // IDs of the module that depends on this module.
-  dependentIds: number[]
 }
 
 interface WebpackReason {
@@ -73,17 +70,7 @@ interface WebpackStat {
   modules: WebpackModule[]
 }
 
-const isAppModule = (module: WebpackModule) =>
-  !/cache|webpack|node_modules/.test(module.name)
-
-const getIssuerModuleId = (issuerPath: WebpackIssuerPath, stat: WebpackStat): number | null => {
-  if (issuerPath.id) return issuerPath.id
-
-  const issuerModule = stat.modules.find(m => m.name === issuerPath.name)
-  if (!issuerModule) return null
-
-  return issuerModule.id
-}
+const isAppKey = (key: string) => !/cache|webpack|node_modules/.test(key)
 
 const cleanupModuleName = (name: string) => {
   if (!name) return ''
@@ -99,12 +86,12 @@ class ModuleGraph {
   nodesById: Map<string, Module> = new Map()
   nodeIdByRelativePath: Map<string, string> = new Map()
 
-  byRelativePath(relativePath: string) {
+  byRelativePath(relativePath: string): Module | null {
     const id = this.nodeIdByRelativePath.get(relativePath)
-    if (!id) throw new Error('cannot find id by relativePath')
+    if (!id) return null
 
     const module = this.nodesById.get(id)
-    if (!module) throw new Error('cannot find module by id')
+    if (!module) return null
 
     return module
   }
@@ -137,7 +124,7 @@ async function main() {
   console.log(`\n------- PHASE 1 ------\n`)
 
   const stat = await readConfiguration()
-  const appModules = stat.modules.filter(isAppModule)
+  const appModules = stat.modules.filter(m => isAppKey(m.name))
 
   const graph = new ModuleGraph()
   const startTime = Date.now()
@@ -152,11 +139,6 @@ async function main() {
   for (const module of appModules) {
     const id = v4()
 
-    const dependentIdsByIssuer = module.issuerPath
-      ?.map(path => getIssuerModuleId(path, stat))
-      .filter(exists) ?? []
-
-    const dependentIds = uniq([...dependentIdsByIssuer])
     const relativePath = cleanupModuleName(module.name)
 
     graph.nodeIdByRelativePath.set(relativePath, id)
@@ -171,7 +153,6 @@ async function main() {
       fileName: fileNameFromPath(module.name),
       relativePath,
       absolutePath,
-      dependentIds
     })
   }
 
@@ -184,13 +165,16 @@ async function main() {
     const resolvedDependents: Map<string, boolean> = new Map()
 
     const relativePath = cleanupModuleName(webpackModule.name)
+
     const module = graph.byRelativePath(relativePath)
+    if (!module) throw new Error('cannot lookup by relative path')
 
     console.log(`module ${module.absolutePath}`)
 
     const reasons = webpackModule?.reasons
-      ?.filter(m => !/cache|webpack|node_modules/.test(m.resolvedModule))
+      ?.filter(m => isAppKey(m.resolvedModule))
 
+    // Use the webpack import/export reason to resolve dependency chain
     for (const reason of reasons) {
       const moduleName = cleanupModuleName(reason.resolvedModule)
 
@@ -211,8 +195,6 @@ async function main() {
         // ...
       }
 
-
-
       // Resolve module path to module identifier in the registry.
       const moduleIdByPath = graph.nodeIdByRelativePath.get(moduleName)
       if (!moduleIdByPath) {
@@ -227,6 +209,19 @@ async function main() {
       const action = isExport ? 're-exported' : 'imported'
       console.log(`  ${action} by ${moduleByPath.absolutePath}`)
     }
+
+    const issuers = webpackModule.issuerPath?.filter(issuer => isAppKey(issuer.name)) ?? []
+
+    for (const issuer of issuers) {
+      const issuerModule = graph.byRelativePath(issuer.name)
+      if (!issuerModule) {
+        console.warn(`  cannot find issuer ${issuer.name}`)
+        continue
+      }
+
+      console.log(`  issued by ${issuerModule.absolutePath}`)
+    }
+
   }
 
   // Construct graph edges from the resolved modules
