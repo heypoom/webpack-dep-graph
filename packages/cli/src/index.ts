@@ -83,8 +83,27 @@ const cleanupModuleName = (name: string) => {
 }
 
 class ModuleGraph {
+  /** Lookup the module by id. */
   nodesById: Map<string, Module> = new Map()
+
+  /** Lookup the module's id by its relative path. */
   nodeIdByRelativePath: Map<string, string> = new Map()
+
+  /**
+   * Lookup the module ids that is being used by the given module.
+   *
+   * It's an adjacency list containing the module ids,
+   * which can be represented as a directed acyclic graph (DAG).
+   *
+   * e.g. `{"id:LoginPage": ["id:LoginForm", "id:LoginButton"]}`,
+   **/
+  dependenciesById: Map<string, Set<string>> = new Map()
+
+  /** Lookup the module ids that re-exports the given module. */
+  exportedBy: Map<string, Set<string>> = new Map()
+
+  /** Lookup the module ids that issues the given module. */
+  issuedBy: Map<string, Set<string>> = new Map()
 
   byRelativePath(relativePath: string): Module | null {
     const id = this.nodeIdByRelativePath.get(relativePath)
@@ -94,6 +113,14 @@ class ModuleGraph {
     if (!module) return null
 
     return module
+  }
+
+  addDependency(parentId: string, childId: string) {
+    if (!this.dependenciesById.has(parentId)) {
+      this.dependenciesById.set(parentId, new Set())
+    }
+
+    this.dependenciesById.get(parentId)?.add(childId)
   }
 }
 
@@ -167,10 +194,10 @@ async function main() {
 
     const relativePath = cleanupModuleName(webpackModule.name)
 
-    const module = graph.byRelativePath(relativePath)
-    if (!module) throw new Error("cannot lookup by relative path")
+    const parentModule = graph.byRelativePath(relativePath)
+    if (!parentModule) throw new Error("cannot lookup by relative path")
 
-    console.log(yellow(`module ${module.absolutePath}`))
+    console.log(yellow(`module ${parentModule.absolutePath}`))
 
     const reasons = webpackModule?.reasons?.filter((m) =>
       isAppKey(m.resolvedModule)
@@ -188,19 +215,24 @@ async function main() {
       resolvedDependents.set(moduleName, true)
 
       // Resolve module path to module identifier in the registry.
-      const module = graph.byRelativePath(moduleName)
-      if (!module) throw new Error("cannot lookup module by relative path")
+      const childModule = graph.byRelativePath(moduleName)
+      if (!childModule) throw new Error("cannot lookup module by relative path")
 
       // Detect if the module is a being re-exported.
       const isExport = reason.type.includes("export imported specifier")
-      const action = isExport ? "re-exported" : "imported"
+      const { absolutePath } = childModule
 
-      let log = `  ${action} by ${module.absolutePath}`
-      if (isExport) log = green(log)
-      console.log(log)
+      if (isExport) {
+        console.log(green(`re-exported by ${absolutePath}`))
+        summary.exports++
 
-      if (isExport) summary.exports++
-      else summary.imports++
+        continue
+      }
+
+      graph.addDependency(parentModule.id, childModule.id)
+
+      console.log(`imported by ${absolutePath}`)
+      summary.imports++
     }
 
     const issuers =
@@ -218,6 +250,17 @@ async function main() {
       `  summary: ${summary.imports} imports, ${summary.exports} re-exports, ${summary.issuers} issuers`
     )
   }
+
+  console.log(`\n------- PHASE 3 ------\n`)
+
+  const deps: Record<string, string[]> = {}
+  const toPath = (id: string) => graph.nodesById.get(id)?.absolutePath ?? ""
+
+  for (const [id, dependencies] of graph.dependenciesById) {
+    deps[toPath(id)] = Array.from(dependencies).map(toPath)
+  }
+
+  await fs.promises.writeFile("./deps.json", JSON.stringify(deps, null, 2))
 }
 
 main()
