@@ -178,25 +178,18 @@ async function main() {
 
     // Use the webpack import/export reason to resolve dependency chain
     for (const reason of reasons) {
-      const moduleName = cleanupModuleName(reason.resolvedModule)
-
       // Ignore side effect evaluation.
       if (reason.type.includes("side effect")) continue
+
+      const moduleName = cleanupModuleName(reason.resolvedModule)
 
       // Mark dependent as resolved, so we don't need to resolve multiple times.
       if (resolvedDependents.has(moduleName)) continue
       resolvedDependents.set(moduleName, true)
 
       // Resolve module path to module identifier in the registry.
-      const moduleIdByPath = graph.nodeIdByRelativePath.get(moduleName)
-      if (!moduleIdByPath) {
-        console.error(`    error! missing ${moduleName} in mapping`)
-        continue
-      }
-
-      // Resolve module id to module
-      const module = graph.nodesById.get(moduleIdByPath)
-      if (!module) throw new Error("what the fuck")
+      const module = graph.byRelativePath(moduleName)
+      if (!module) throw new Error("cannot lookup module by relative path")
 
       // Detect if the module is a being re-exported.
       const isExport = reason.type.includes("export imported specifier")
