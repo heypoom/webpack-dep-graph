@@ -162,6 +162,7 @@ async function main() {
 
   // Construct dependents from import reason.
   for (const webpackModule of appModules) {
+    const summary = { imports: 0, exports: 0, issuers: 0 }
     const resolvedDependents: Map<string, boolean> = new Map()
 
     const relativePath = cleanupModuleName(webpackModule.name)
@@ -202,6 +203,9 @@ async function main() {
       const action = isExport ? "re-exported" : "imported"
 
       console.log(`  ${action} by ${moduleByPath.absolutePath}`)
+
+      if (isExport) summary.exports++
+      else summary.imports++
     }
 
     const issuers =
@@ -215,7 +219,12 @@ async function main() {
       }
 
       console.log(`  issued by ${issuerModule.absolutePath}`)
+      summary.issuers++
     }
+
+    console.log(
+      `  summary: ${summary.imports} imports, ${summary.exports} re-exports, ${summary.issuers} issuers`
+    )
   }
 }
 
