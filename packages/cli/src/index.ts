@@ -207,13 +207,10 @@ async function main() {
       webpackModule.issuerPath?.filter((issuer) => isAppKey(issuer.name)) ?? []
 
     for (const issuer of issuers) {
-      const issuerModule = graph.byRelativePath(issuer.name)
-      if (!issuerModule) {
-        console.warn(`  cannot find issuer ${issuer.name}`)
-        continue
-      }
+      const module = graph.byRelativePath(issuer.name)
+      if (!module) continue
 
-      console.log(gray(`  issued by ${issuerModule.absolutePath}`))
+      console.log(gray(`  issued by ${module.absolutePath}`))
       summary.issuers++
     }
 
