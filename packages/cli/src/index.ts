@@ -1,6 +1,6 @@
 import fs from "fs"
 import { v4 } from "uuid"
-import { rest, uniq } from "lodash"
+import { gray, yellow, green } from "colorette"
 
 interface Module {
   id: string
@@ -170,7 +170,7 @@ async function main() {
     const module = graph.byRelativePath(relativePath)
     if (!module) throw new Error("cannot lookup by relative path")
 
-    console.log(`module ${module.absolutePath}`)
+    console.log(yellow(`module ${module.absolutePath}`))
 
     const reasons = webpackModule?.reasons?.filter((m) =>
       isAppKey(m.resolvedModule)
@@ -202,7 +202,9 @@ async function main() {
       const isExport = reason.type.includes("export imported specifier")
       const action = isExport ? "re-exported" : "imported"
 
-      console.log(`  ${action} by ${moduleByPath.absolutePath}`)
+      let log = `  ${action} by ${moduleByPath.absolutePath}`
+      if (isExport) log = green(log)
+      console.log(log)
 
       if (isExport) summary.exports++
       else summary.imports++
@@ -218,7 +220,7 @@ async function main() {
         continue
       }
 
-      console.log(`  issued by ${issuerModule.absolutePath}`)
+      console.log(gray(`  issued by ${issuerModule.absolutePath}`))
       summary.issuers++
     }
 
