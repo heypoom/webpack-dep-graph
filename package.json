@@ -13,6 +13,8 @@
     "@types/lodash": "^4.14.175",
     "@types/node": "^16.10.3",
     "@types/toposort": "^2.0.3",
+    "husky": "^7.0.2",
+    "lerna": "^4.0.0",
     "prettier": "^2.4.1",
     "ts-node": "^10.2.1",
     "tsconfig-paths": "^3.11.0",
@@ -26,5 +28,8 @@
     "lodash": "^4.17.21",
     "toposort": "^2.0.2",
     "uuid": "^8.3.2"
-  }
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
