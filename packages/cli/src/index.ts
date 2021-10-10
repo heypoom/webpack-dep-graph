@@ -4,6 +4,9 @@ import { Analyzer, printFileTree } from "@analyzer"
 
 import { loadWebpackStat } from "./utils/loadWebpackStat"
 
+const write = (path: string, json: unknown) =>
+  writeFile(path, JSON.stringify(json, null, 2))
+
 async function main() {
   const statFileName = process.argv[2] || "webpack-stats.json"
   console.log(`\n------- loading ${statFileName} ------\n`)
@@ -18,12 +21,8 @@ async function main() {
 
   printFileTree(analyzer.context)
 
-  await writeFile("./deps.json", JSON.stringify(analyzer.dependencies, null, 2))
-
-  await writeFile(
-    "./circular.json",
-    JSON.stringify(analyzer.circularImports, null, 2)
-  )
+  await write("./deps.json", analyzer.dependencies)
+  await write("./circular.json", analyzer.circularImports)
 }
 
 main()
