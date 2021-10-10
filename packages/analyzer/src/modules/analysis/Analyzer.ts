@@ -37,10 +37,10 @@ export class Analyzer {
     const webpackModules = this.stat.modules.filter((m) => isAppKey(m.name))
 
     return {
+      ...this.config,
       vfs: this.vfs,
-      graph: this.graph,
       webpackModules,
-      projectRoot: this.config.projectRoot,
+      graph: this.graph,
     }
   }
 

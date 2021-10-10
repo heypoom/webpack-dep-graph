@@ -4,7 +4,7 @@ import { gray, green, yellow } from "colorette"
 export function extractUsages(context: AnalyzerContext) {
   const { webpackModules, graph, printImportAnalysis = false } = context
 
-  const report = (text: string) => printImportAnalysis && console.debug(text)
+  const report = (text: string) => printImportAnalysis && console.log(text)
 
   report(`\n------- analyzing imports and re-exports ------\n`)
 
