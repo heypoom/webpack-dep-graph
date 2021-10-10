@@ -1,4 +1,4 @@
-export { VirtualFS } from "./modules/vfs/FileSystem"
+export { VirtualFS } from "./modules/vfs/VirtualFS"
 
 export { Analyzer } from "./modules/analysis/Analyzer"
 export { ModuleGraph } from "./modules/analysis/ModuleGraph"
