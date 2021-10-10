@@ -1,23 +1,26 @@
-/** Map directory name to directory. */
-type DirectoryMap = Map<string, Directory>
-
 interface Directory {
-  folders: DirectoryMap
-
   /** Map file name to module id. */
   files: Map<string, string>
+
+  /** Map directory name to directory. */
+  folders: Map<string, Directory>
 }
 
-type WalkHandle = (node: Directory, dir: string) => void
+type WalkHandle = (dir: Directory, folderName: string) => void
+
+const createDirectory = (): Directory => ({
+  files: new Map(),
+  folders: new Map(),
+})
 
 class VirtualFS {
-  root: Directory = { folders: new Map(), files: new Map() }
+  root: Directory = createDirectory()
 
   mkdir(path: string): Directory {
-    return this.walk(path, (node, directory) => {
-      if (!node.folders.has(directory)) {
-        node.folders.set(directory, { folders: new Map(), files: new Map() })
-      }
+    return this.walk(path, (dir, name) => {
+      if (dir.folders.has(name)) return
+
+      dir.folders.set(name, createDirectory())
     })
   }
 
@@ -29,14 +32,14 @@ class VirtualFS {
     if (!path) return this.root
 
     const segments = path.split("/")
-    let node: Directory = this.root
+    let dir: Directory = this.root
 
     for (const directory of segments) {
-      handle(node, directory)
-      node = node.folders.get(directory)!
+      handle(dir, directory)
+      dir = dir.folders.get(directory)!
     }
 
-    return node
+    return dir
   }
 
   touch(path: string, id = ""): Directory {
@@ -52,6 +55,7 @@ class VirtualFS {
     return dir
   }
 }
+
 const vfs = new VirtualFS()
 
 vfs.touch("hello.txt") //?
