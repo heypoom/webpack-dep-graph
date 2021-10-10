@@ -159,5 +159,6 @@ dist
 
 webpack-stats.json
 deps.json
+circular.json
 deps.dot
 deps.png

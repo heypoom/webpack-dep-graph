@@ -7,6 +7,7 @@ import {
   AnalyzerContext,
   AnalyzerConfig,
   createDependencyMap,
+  getCircularImports,
 } from "@analyzer"
 
 import { extractUsages } from "./utils/extractUsages"
@@ -45,5 +46,9 @@ export class Analyzer {
 
   get dependencies() {
     return createDependencyMap(this.graph)
+  }
+
+  get circularImports() {
+    return getCircularImports(this.dependencies)
   }
 }

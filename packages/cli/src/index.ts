@@ -1,6 +1,6 @@
 import { writeFile } from "fs/promises"
 
-import { Analyzer, printFileTree, createDependencyMap } from "@analyzer"
+import { Analyzer, printFileTree } from "@analyzer"
 
 import { loadWebpackStat } from "./utils/loadWebpackStat"
 
@@ -19,6 +19,11 @@ async function main() {
   printFileTree(analyzer.context)
 
   await writeFile("./deps.json", JSON.stringify(analyzer.dependencies, null, 2))
+
+  await writeFile(
+    "./circular.json",
+    JSON.stringify(analyzer.circularImports, null, 2)
+  )
 }
 
 main()
