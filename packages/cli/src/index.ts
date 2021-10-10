@@ -1,6 +1,6 @@
 import fs from "fs"
 import { v4 } from "uuid"
-import { gray, yellow, green } from "colorette"
+import { red, gray, yellow, green, bold } from "colorette"
 import graphviz from "graphviz"
 
 interface Module {
@@ -148,6 +148,56 @@ async function readConfiguration() {
   return stat
 }
 
+/**
+ * Source: https://github.com/pahen/madge/blob/master/lib/cyclic.js
+ */
+function getCircularDeps(graph: Record<string, string[]>) {
+  const circular: string[][] = []
+
+  const resolved: Record<string, boolean> = {}
+  const unresolved: Record<string, boolean> = {}
+
+  function getPath(parent: string) {
+    let visited = false
+
+    return Object.keys(unresolved).filter((module) => {
+      if (module === parent) visited = true
+
+      return visited && unresolved[module]
+    })
+  }
+
+  function resolve(id: string) {
+    unresolved[id] = true
+
+    if (graph[id]) {
+      graph[id].forEach((dependency) => {
+        if (!resolved[dependency]) {
+          if (unresolved[dependency]) {
+            const paths = getPath(dependency)
+            console.log(
+              bold(red("circular dependency:")),
+              paths.join(" -> "),
+              "\n"
+            )
+
+            return circular.push(paths)
+          }
+
+          resolve(dependency)
+        }
+      })
+    }
+
+    resolved[id] = true
+    unresolved[id] = false
+  }
+
+  Object.keys(graph).forEach(resolve)
+
+  return circular
+}
+
 async function main() {
   console.log(`\n------- PHASE 1 ------\n`)
 
@@ -256,22 +306,22 @@ async function main() {
 
   const totalCount = { nodes: 0, edges: 0 }
 
-  const deps: Record<string, string[]> = {}
+  const depGraph: Record<string, string[]> = {}
   const toPath = (id: string) => graph.nodesById.get(id)?.absolutePath ?? ""
 
   for (const [id, dependencies] of graph.dependenciesById) {
-    deps[toPath(id)] = Array.from(dependencies).map(toPath)
+    depGraph[toPath(id)] = Array.from(dependencies).map(toPath)
   }
 
-  await fs.promises.writeFile("./deps.json", JSON.stringify(deps, null, 2))
+  await fs.promises.writeFile("./deps.json", JSON.stringify(depGraph, null, 2))
 
   const g = graphviz.digraph("G")
 
-  for (const consumerPath in deps) {
+  for (const consumerPath in depGraph) {
     const n = g.addNode(consumerPath, { color: "blue" })
     totalCount.nodes++
 
-    const dependencies = deps[consumerPath]
+    const dependencies = depGraph[consumerPath]
     for (const dep of dependencies) {
       g.addEdge(n, dep, { color: "red" })
       totalCount.edges++
@@ -281,6 +331,8 @@ async function main() {
   await fs.promises.writeFile("./deps.dot", g.to_dot())
 
   console.log(totalCount)
+
+  getCircularDeps(depGraph)
 }
 
 main()
