@@ -29,7 +29,8 @@
     // "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
-      "@analyzer": ["packages/analyzer/src/index.ts"]
+      "@analyzer": ["packages/analyzer/src/index.ts"],
+      "@cli": ["packages/cli/src/index.ts"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like `./node_modules/@types`. */

@@ -8,13 +8,15 @@ const edge = (source: string, target: string): ElementDefinition => ({
   data: { source, target },
 })
 
-const elements: ElementDefinition[] = [
-  node("A"),
-  node("B"),
-  node("C"),
-  edge("A", "B"),
-  edge("B", "C"),
-]
+const elements: ElementDefinition[] = []
+
+const MAX = 2000
+
+for (let i = 0; i < MAX; i++) {
+  elements.push(node(`${i}`))
+
+  if (i < MAX - 1) elements.push(edge(`${i}`, `${i + 1}`))
+}
 
 const stylesheet: Stylesheet[] = [
   {
@@ -62,10 +64,13 @@ export function App() {
       </head>
 
       <CytoscapeComponent
-        layout={{ name: "cose" }}
+        layout={{ name: "breadthfirst" }}
         stylesheet={stylesheet}
         elements={elements}
         style={{ width: "100vw", height: "100vh" }}
+        hideEdgesOnViewport
+        textureOnViewport
+        motionBlur
       />
     </div>
   )
