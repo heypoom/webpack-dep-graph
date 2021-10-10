@@ -1,44 +1,42 @@
 /** Map directory name to directory. */
-type DirTree = Map<string, Directory>
+type DirectoryMap = Map<string, Directory>
 
 interface Directory {
-  folders: DirTree
+  folders: DirectoryMap
 
   /** Map file name to module id. */
   files: Map<string, string>
 }
 
+type WalkHandle = (node: Directory, dir: string) => void
+
 class VirtualFS {
-  folders: DirTree = new Map()
+  root: Directory = { folders: new Map(), files: new Map() }
 
-  mkdir(path: string) {
-    const segments = path.split("/")
-    let node: DirTree = this.folders
-
-    for (const directory of segments) {
-      if (!node.has(directory)) {
-        node.set(directory, { folders: new Map(), files: new Map() })
+  mkdir(path: string): Directory {
+    return this.walk(path, (node, directory) => {
+      if (!node.folders.has(directory)) {
+        node.folders.set(directory, { folders: new Map(), files: new Map() })
       }
-
-      const child = node.get(directory)!
-      node = child.folders
-    }
+    })
   }
 
-  dirOf(path: string): Directory | null {
+  dir(path: string): Directory {
+    return this.walk(path, () => {})
+  }
+
+  walk(path: string, handle: WalkHandle): Directory {
+    if (!path) return this.root
+
     const segments = path.split("/")
-    let node: DirTree = this.folders
+    let node: Directory = this.root
 
-    for (const directory of segments.slice(0, -1)) {
-      if (!node.has(directory)) return null
-
-      const child = node.get(directory)!
-      node = child.folders
+    for (const directory of segments) {
+      handle(node, directory)
+      node = node.folders.get(directory)!
     }
 
-    const [folder] = segments.slice(-1)
-
-    return node.get(folder)
+    return node
   }
 
   touch(path: string, id = ""): Directory {
@@ -46,19 +44,18 @@ class VirtualFS {
     const paths = segments.slice(0, -1)
     const [file] = segments.slice(-1)
 
-    const folder = paths.join("/") || "."
-    this.mkdir(folder)
+    const folder = paths.join("/")
+    const dir = this.mkdir(folder)
 
-    const dir = this.dirOf(folder)
     dir.files.set(file, id)
 
     return dir
   }
 }
 const vfs = new VirtualFS()
-vfs.mkdir("libs/module-a/src/module-b/blocks")
 
-const dir = vfs.touch("libs/module-a/src/module-b/constants.ts")
-vfs.touch("hello.txt")
-vfs.mkdir("root")
-vfs.folders //?
+vfs.touch("hello.txt") //?
+vfs.mkdir("src/modules")
+vfs.touch("config/production.json") //?
+vfs.dir("config") //?
+vfs.root //?
