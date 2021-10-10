@@ -1,6 +1,6 @@
 import { ModuleGraph } from "@analyzer"
 
-export async function createDependencyMap(graph: ModuleGraph) {
+export function createDependencyMap(graph: ModuleGraph) {
   const mapping: Record<string, string[]> = {}
   const toPath = (id: string) => graph.nodesById.get(id)?.absolutePath ?? ""
 

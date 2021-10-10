@@ -6,6 +6,7 @@ import {
   getProjectRoot,
   AnalyzerContext,
   AnalyzerConfig,
+  createDependencyMap,
 } from "@analyzer"
 
 import { extractUsages } from "./utils/extractUsages"
@@ -40,5 +41,9 @@ export class Analyzer {
       webpackModules,
       projectRoot: this.config.projectRoot,
     }
+  }
+
+  get dependencies() {
+    return createDependencyMap(this.graph)
   }
 }

@@ -18,8 +18,7 @@ async function main() {
 
   printFileTree(analyzer.context)
 
-  const depsMap = await createDependencyMap(analyzer.graph)
-  await writeFile("./deps.json", JSON.stringify(depsMap, null, 2))
+  await writeFile("./deps.json", JSON.stringify(analyzer.dependencies, null, 2))
 }
 
 main()
