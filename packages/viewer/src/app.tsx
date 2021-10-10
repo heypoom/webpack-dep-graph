@@ -2,6 +2,8 @@ import type { ElementDefinition, Stylesheet } from "cytoscape"
 
 import CytoscapeComponent from "react-cytoscapejs"
 
+import { Analyzer } from "@analyzer"
+
 const node = (id: string): ElementDefinition => ({ data: { id } })
 
 const edge = (source: string, target: string): ElementDefinition => ({
@@ -9,14 +11,6 @@ const edge = (source: string, target: string): ElementDefinition => ({
 })
 
 const elements: ElementDefinition[] = []
-
-const MAX = 2000
-
-for (let i = 0; i < MAX; i++) {
-  elements.push(node(`${i}`))
-
-  if (i < MAX - 1) elements.push(edge(`${i}`, `${i + 1}`))
-}
 
 const stylesheet: Stylesheet[] = [
   {
@@ -44,6 +38,9 @@ const stylesheet: Stylesheet[] = [
     },
   },
 ]
+
+const analyzer = new Analyzer({ modules: [] })
+console.log(analyzer)
 
 export function App() {
   return (

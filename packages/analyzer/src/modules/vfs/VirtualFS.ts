@@ -1,5 +1,3 @@
-import { blue, green, yellow } from "colorette"
-
 interface Directory {
   /** Map file name to module id. */
   files: Map<string, string>
@@ -60,7 +58,8 @@ export class VirtualFS {
         // Format the directory name.
         if (formatter) displayName = formatter("folder", folderName)
 
-        console.log(yellow(`${spacer}${displayName}/`))
+        // TODO: Show the directory name in yellow.
+        // console.log(yellow(`${spacer}${displayName}/`))
 
         traverse(directory, depth + 1)
       }
@@ -71,8 +70,8 @@ export class VirtualFS {
         // Format the file name.
         if (formatter) displayName = formatter("file", fileName, moduleId)
 
-        // Highlight index files in green.
-        if (/index\.tsx?/.test(fileName)) displayName = green(fileName)
+        // TODO: Highlight index files in green.
+        // if (/index\.tsx?/.test(fileName)) displayName = green(fileName)
 
         console.log(`${spacer}${displayName}`)
       }

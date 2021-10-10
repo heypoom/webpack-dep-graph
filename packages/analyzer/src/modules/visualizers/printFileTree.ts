@@ -1,5 +1,4 @@
 import filesize from "filesize"
-import { bold, red, redBright } from "colorette"
 
 import { AnalyzerContext } from "@analyzer"
 
@@ -17,12 +16,12 @@ export function printFileTree(context: AnalyzerContext) {
       const size = module.sizeInBytes
       displayName = `${name} (${filesize(size)})`
 
-      // Highlight large modules.
-      if (size > 30000) {
-        displayName = bold(red(displayName))
-      } else if (size > 20000) {
-        displayName = redBright(displayName)
-      }
+      // TODO: Highlight large modules.
+      // if (size > 30000) {
+      //   displayName = bold(red(displayName))
+      // } else if (size > 20000) {
+      //   displayName = redBright(displayName)
+      // }
 
       return displayName
     }

@@ -1,5 +1,4 @@
 import { AnalyzerContext, cleanupModuleName, isAppKey } from "@analyzer"
-import { gray, green, yellow } from "colorette"
 
 export function extractUsages(context: AnalyzerContext) {
   const { webpackModules, graph, printImportAnalysis = false } = context
@@ -17,7 +16,8 @@ export function extractUsages(context: AnalyzerContext) {
     const module = graph.byRelativePath(relativePath)
     if (!module) throw new Error("cannot lookup by relative path")
 
-    report(yellow(`module ${module.absolutePath}`))
+    // TODO: Re-enable this once we support web environments.
+    // report(yellow(`module ${module.absolutePath}`))
 
     const reasons = webpackModule?.reasons?.filter((m) =>
       isAppKey(m.resolvedModule)
@@ -43,7 +43,7 @@ export function extractUsages(context: AnalyzerContext) {
       const { absolutePath } = consumerModule
 
       if (isExport) {
-        report(green(`  re-exported by ${absolutePath}`))
+        // report(green(`  re-exported by ${absolutePath}`))
         summary.exports++
 
         continue
@@ -62,7 +62,7 @@ export function extractUsages(context: AnalyzerContext) {
       const module = graph.byRelativePath(issuer.name)
       if (!module) continue
 
-      report(gray(`  issued by ${module.absolutePath}`))
+      // report(gray(`  issued by ${module.absolutePath}`))
       summary.issuers++
     }
 

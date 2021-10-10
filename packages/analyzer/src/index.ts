@@ -12,7 +12,6 @@ export { cleanupModuleName } from "./modules/parsers/moduleParser"
 export { getAbsolutePath, fileNameFromPath } from "./modules/parsers/pathParser"
 
 export { printFileTree } from "./modules/visualizers/printFileTree"
-export { createDotGraph } from "./modules/visualizers/createDotGraph"
 
 export type {
   WebpackStat,
