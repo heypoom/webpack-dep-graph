@@ -7,11 +7,13 @@ import {
   getAbsolutePath,
 } from "@analyzer"
 
+const debug = (text: string) => console.debug(text)
+
 export function createModuleNodes(context: AnalyzerContext) {
   const { graph, vfs, projectRoot, webpackModules } = context
 
   const startTime = Date.now()
-  console.debug(`located ${webpackModules.length} modules from this build.`)
+  debug(`located ${webpackModules.length} modules from this build.`)
 
   // Construct graph nodes from the module.
   for (const module of webpackModules) {
@@ -35,5 +37,5 @@ export function createModuleNodes(context: AnalyzerContext) {
     vfs.touch(absolutePath, id)
   }
 
-  console.debug(`creating module nodes takes ${Date.now() - startTime}ms.`)
+  debug(`creating module nodes takes ${Date.now() - startTime}ms.`)
 }

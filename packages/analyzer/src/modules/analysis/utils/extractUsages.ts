@@ -2,9 +2,11 @@ import { AnalyzerContext, cleanupModuleName, isAppKey } from "@analyzer"
 import { gray, green, yellow } from "colorette"
 
 export function extractUsages(context: AnalyzerContext) {
-  const { webpackModules, graph } = context
+  const { webpackModules, graph, printImportAnalysis = false } = context
 
-  console.debug(`\n------- analyzing imports and re-exports ------\n`)
+  const report = (text: string) => printImportAnalysis && console.debug(text)
+
+  report(`\n------- analyzing imports and re-exports ------\n`)
 
   for (const webpackModule of webpackModules) {
     const summary = { imports: 0, exports: 0, issuers: 0 }
@@ -15,7 +17,7 @@ export function extractUsages(context: AnalyzerContext) {
     const module = graph.byRelativePath(relativePath)
     if (!module) throw new Error("cannot lookup by relative path")
 
-    console.log(yellow(`module ${module.absolutePath}`))
+    report(yellow(`module ${module.absolutePath}`))
 
     const reasons = webpackModule?.reasons?.filter((m) =>
       isAppKey(m.resolvedModule)
@@ -41,7 +43,7 @@ export function extractUsages(context: AnalyzerContext) {
       const { absolutePath } = consumerModule
 
       if (isExport) {
-        console.log(green(`  re-exported by ${absolutePath}`))
+        report(green(`  re-exported by ${absolutePath}`))
         summary.exports++
 
         continue
@@ -49,7 +51,7 @@ export function extractUsages(context: AnalyzerContext) {
 
       graph.addDependency(consumerModule.id, module.id)
 
-      console.log(`  imported by ${absolutePath}`)
+      report(`  imported by ${absolutePath}`)
       summary.imports++
     }
 
@@ -60,11 +62,11 @@ export function extractUsages(context: AnalyzerContext) {
       const module = graph.byRelativePath(issuer.name)
       if (!module) continue
 
-      console.log(gray(`  issued by ${module.absolutePath}`))
+      report(gray(`  issued by ${module.absolutePath}`))
       summary.issuers++
     }
 
-    console.log(
+    report(
       `  summary: ${summary.imports} imports, ${summary.exports} re-exports, ${summary.issuers} issuers`
     )
   }

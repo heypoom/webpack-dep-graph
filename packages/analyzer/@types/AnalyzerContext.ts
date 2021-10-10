@@ -9,4 +9,5 @@ export interface AnalyzerContext extends AnalyzerConfig {
 
 export interface AnalyzerConfig {
   projectRoot: string
+  printImportAnalysis?: boolean
 }

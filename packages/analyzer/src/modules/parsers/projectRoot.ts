@@ -10,7 +10,7 @@ export function getProjectRoot(modules: WebpackModule[]) {
   const [projectRoot] = refModule.issuer.split("node_modules")
   if (!projectRoot) return null
 
-  console.debug("[heuristic] absolute project root might be at", projectRoot)
+  console.debug("absolute project root might be at", projectRoot)
 
   return projectRoot
 }

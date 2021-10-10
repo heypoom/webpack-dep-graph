@@ -17,9 +17,8 @@ async function main() {
   const analyzer = new Analyzer(webpackStat)
   analyzer.analyze()
 
-  console.log(`\n------- displaying file tree ------\n`)
-
-  printFileTree(analyzer.context)
+  // console.log(`\n------- displaying file tree ------\n`)
+  // printFileTree(analyzer.context)
 
   await write("./deps.json", analyzer.dependencies)
   await write("./circular.json", analyzer.circularImports)
