@@ -202,7 +202,7 @@ function getCircularDeps(graph: Record<string, string[]>) {
 }
 
 async function main() {
-  console.log(`\n------- PHASE 1 ------\n`)
+  console.log(`\n------- parsing webpack-stats.json ------\n`)
 
   const stat = await readConfiguration()
   const appModules = stat.modules.filter((m) => isAppKey(m.name))
@@ -240,11 +240,9 @@ async function main() {
     vfs.touch(absolutePath, id)
   }
 
-  console.debug(
-    `creating module graph nodes takes ${Date.now() - startTime}ms.`
-  )
+  console.debug(`initializing module nodes takes ${Date.now() - startTime}ms.`)
 
-  console.log(`\n------- PHASE 2 ------\n`)
+  console.log(`\n------- analyzing imports and exports ------\n`)
 
   // Construct dependents from import reason.
   for (const webpackModule of appModules) {
@@ -310,7 +308,7 @@ async function main() {
     )
   }
 
-  console.log(`\n------- PHASE 3 ------\n`)
+  console.log(`\n------- generating reports ------\n`)
 
   const totalCount = { nodes: 0, edges: 0 }
 
@@ -340,7 +338,11 @@ async function main() {
 
   console.log(totalCount)
 
+  console.log(`\n------- scanning for circular dependencies ------\n`)
+
   getCircularDeps(depGraph)
+
+  console.log(`\n------- reconstructing file tree ------\n`)
 
   vfs.printTree(vfs.root, (type, name, id) => {
     if (type === "file" && id) {
