@@ -139,16 +139,22 @@ const exists = <T>(x: T | null): x is T => !!x
 const getAbsolutePath = (module: WebpackModule, projectRoot: string) =>
   cleanupModuleName(module.nameForCondition?.replace(projectRoot, ""))
 
-async function readConfiguration() {
+async function loadWebpackStat(fileName: string) {
   const startTime = Date.now()
-  const fileName = "./webpack-stats.json"
 
-  const statString = await fs.promises.readFile(fileName, "utf-8")
-  const stat: WebpackStat = JSON.parse(statString)
+  try {
+    const statString = await fs.promises.readFile(fileName, "utf-8")
 
-  console.debug(`loading stat.json takes ${Date.now() - startTime}ms.`)
+    const stat: WebpackStat = JSON.parse(statString)
+    console.debug(`loading stat.json takes ${Date.now() - startTime}ms.`)
 
-  return stat
+    return stat
+  } catch (error) {
+    console.error(
+      bold(redBright(`unable to read webpack stat file: ${fileName}`))
+    )
+    console.error(error)
+  }
 }
 
 /**
@@ -202,9 +208,12 @@ function getCircularDeps(graph: Record<string, string[]>) {
 }
 
 async function main() {
-  console.log(`\n------- parsing webpack-stats.json ------\n`)
+  const statFileName = process.argv[2] || "webpack-stats.json"
+  console.log(`\n------- loading ${statFileName} ------\n`)
 
-  const stat = await readConfiguration()
+  const stat = await loadWebpackStat(statFileName)
+  if (!stat) return
+
   const appModules = stat.modules.filter((m) => isAppKey(m.name))
 
   const graph = new ModuleGraph()
