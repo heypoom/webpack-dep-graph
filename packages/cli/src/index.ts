@@ -1,6 +1,6 @@
 import fs from "fs"
 import { v4 } from "uuid"
-import { red, gray, yellow, green, bold } from "colorette"
+import { red, gray, yellow, green, bold, redBright } from "colorette"
 import graphviz from "graphviz"
 
 import { VirtualFS } from "@analyzer"
@@ -346,8 +346,23 @@ async function main() {
 
   vfs.printTree(vfs.root, (type, name, id) => {
     if (type === "file" && id) {
-      const node = graph.nodesById.get(id)
-      if (node) return `${name} (${filesize(node.sizeInBytes)})`
+      let displayName = name
+
+      const module = graph.nodesById.get(id)
+      if (!module) return name
+
+      // Display file sizes in the tree.
+      const size = module.sizeInBytes
+      displayName = `${name} (${filesize(size)})`
+
+      // Highlight large modules.
+      if (size > 30000) {
+        displayName = bold(red(displayName))
+      } else if (size > 20000) {
+        displayName = redBright(displayName)
+      }
+
+      return displayName
     }
 
     return name
