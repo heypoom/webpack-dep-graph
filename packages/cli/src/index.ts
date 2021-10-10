@@ -1,4 +1,6 @@
-import { Analyzer, printFileTree } from "@analyzer"
+import { writeFile } from "fs/promises"
+
+import { Analyzer, printFileTree, createDependencyMap } from "@analyzer"
 
 import { loadWebpackStat } from "./utils/loadWebpackStat"
 
@@ -15,6 +17,9 @@ async function main() {
   console.log(`\n------- displaying file tree ------\n`)
 
   printFileTree(analyzer.context)
+
+  const depsMap = await createDependencyMap(analyzer.graph)
+  await writeFile("./deps.json", JSON.stringify(depsMap, null, 2))
 }
 
 main()
