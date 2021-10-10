@@ -217,6 +217,7 @@ async function main() {
 
   const [prefix] = refModule.issuer.split("node_modules")
   console.log("[heuristic] absolute project root might be at", prefix)
+  console.log(`located ${appModules.length} modules from this build.`)
 
   // Construct graph nodes from the module.
   for (const module of appModules) {
