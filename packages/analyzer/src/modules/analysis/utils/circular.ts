@@ -4,8 +4,8 @@
 export function getCircularImports(graph: Record<string, string[]>) {
   const circular: string[][] = []
 
-  const resolved: Record<string, boolean> = {}
-  const unresolved: Record<string, boolean> = {}
+  const resolved: Map<string, boolean> = new Map()
+  const unresolved: Map<string, boolean> = new Map()
 
   function getPath(parent: string) {
     let visited = false
@@ -13,17 +13,17 @@ export function getCircularImports(graph: Record<string, string[]>) {
     return Object.keys(unresolved).filter((module) => {
       if (module === parent) visited = true
 
-      return visited && unresolved[module]
+      return visited && unresolved.get(module)
     })
   }
 
   function resolve(id: string) {
-    unresolved[id] = true
+    unresolved.set(id, true)
 
     if (graph[id]) {
       graph[id].forEach((dependency) => {
-        if (!resolved[dependency]) {
-          if (unresolved[dependency]) {
+        if (!resolved.get(dependency)) {
+          if (unresolved.get(dependency)) {
             const paths = getPath(dependency)
 
             return circular.push(paths)
@@ -34,8 +34,8 @@ export function getCircularImports(graph: Record<string, string[]>) {
       })
     }
 
-    resolved[id] = true
-    unresolved[id] = false
+    resolved.set(id, true)
+    unresolved.set(id, false)
   }
 
   Object.keys(graph).forEach(resolve)
