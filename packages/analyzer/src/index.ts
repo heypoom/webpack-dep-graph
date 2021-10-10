@@ -2,17 +2,16 @@ export { VirtualFS } from "./modules/vfs/FileSystem"
 
 export { Analyzer } from "./modules/analysis/Analyzer"
 export { ModuleGraph } from "./modules/analysis/ModuleGraph"
+export { getCircularImports } from "./modules/analysis/utils/circular"
 
-export { isAppKey } from "./utils/filterModule"
-export { getCircularImports } from "./utils/circular"
+export { isAppKey } from "./modules/parsers/filterModule"
+export { getProjectRoot } from "./modules/parsers/projectRoot"
+export { cleanupModuleName } from "./modules/parsers/moduleParser"
+export { getAbsolutePath, fileNameFromPath } from "./modules/parsers/pathParser"
 
-export { cleanupModuleName } from "./utils/moduleParser"
-export { getAbsolutePath, fileNameFromPath } from "./utils/pathParser"
-export { getProjectRoot } from "./utils/projectRoot"
-
-export { printFileTree } from "./utils/printFileTree"
-export { createDotGraph } from "./utils/createDotGraph"
-export { createDependencyMap } from "./utils/createDependencyMap"
+export { printFileTree } from "./modules/producers/printFileTree"
+export { createDotGraph } from "./modules/producers/createDotGraph"
+export { createDependencyMap } from "./modules/producers/createDependencyMap"
 
 export type {
   WebpackStat,
