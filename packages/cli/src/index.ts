@@ -3,6 +3,8 @@ import { v4 } from "uuid"
 import { red, gray, yellow, green, bold } from "colorette"
 import graphviz from "graphviz"
 
+import { VirtualFS } from "@analyzer"
+
 interface Module {
   id: string
 
@@ -205,6 +207,8 @@ async function main() {
   const appModules = stat.modules.filter((m) => isAppKey(m.name))
 
   const graph = new ModuleGraph()
+  const vfs = new VirtualFS()
+
   const startTime = Date.now()
 
   const refModule = appModules.find((m) => /node_modules/.test(m.issuer))
@@ -230,6 +234,9 @@ async function main() {
       relativePath,
       absolutePath,
     })
+
+    // Register the path with the virtual file system.
+    vfs.touch(absolutePath, id)
   }
 
   console.debug(
@@ -333,6 +340,8 @@ async function main() {
   console.log(totalCount)
 
   getCircularDeps(depGraph)
+
+  vfs.printTree()
 }
 
 main()

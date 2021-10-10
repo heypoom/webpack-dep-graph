@@ -1,3 +1,5 @@
+import { yellow } from "colorette"
+
 interface Directory {
   /** Map file name to module id. */
   files: Map<string, string>
@@ -13,11 +15,11 @@ const createDirectory = (): Directory => ({
   folders: new Map(),
 })
 
-class VirtualFS {
+export class VirtualFS {
   root: Directory = createDirectory()
 
   mkdir(path: string): Directory {
-    return this.walk(path, (dir, name) => {
+    return this.walkPath(path, (dir, name) => {
       if (dir.folders.has(name)) return
 
       dir.folders.set(name, createDirectory())
@@ -25,10 +27,10 @@ class VirtualFS {
   }
 
   dir(path: string): Directory {
-    return this.walk(path, () => {})
+    return this.walkPath(path, () => {})
   }
 
-  walk(path: string, handle: WalkHandle): Directory {
+  walkPath(path: string, handle: WalkHandle): Directory {
     if (!path) return this.root
 
     const segments = path.split("/")
@@ -42,7 +44,28 @@ class VirtualFS {
     return dir
   }
 
+  printTree(root = this.root) {
+    function traverse(dir: Directory, depth = 0) {
+      const spacer = " ".repeat(depth * 2)
+
+      for (const [folderName, directory] of dir.folders) {
+        console.log(yellow(`${spacer}${folderName}/`))
+
+        traverse(directory, depth + 1)
+      }
+
+      for (const [fileName, moduleId] of dir.files) {
+        console.log(`${spacer}${fileName}`)
+      }
+    }
+
+    traverse(root)
+  }
+
   touch(path: string, id = ""): Directory {
+    // Do not create the directory if the path is missing.
+    if (!path) return this.root
+
     const segments = path.split("/")
     const paths = segments.slice(0, -1)
     const [file] = segments.slice(-1)
@@ -56,10 +79,12 @@ class VirtualFS {
   }
 }
 
-const vfs = new VirtualFS()
+// const vfs = new VirtualFS()
 
-vfs.touch("hello.txt") //?
-vfs.mkdir("src/modules")
-vfs.touch("config/production.json") //?
-vfs.dir("config") //?
-vfs.root //?
+// vfs.touch("hello.txt") //?
+// vfs.mkdir("src/modules")
+// vfs.touch("config/production.json") //?
+// vfs.dir("config") //?
+// vfs.root //?
+
+// vfs.scan()
