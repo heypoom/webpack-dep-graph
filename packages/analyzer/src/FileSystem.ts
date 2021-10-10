@@ -1,4 +1,4 @@
-import { yellow } from "colorette"
+import { blue, green, yellow } from "colorette"
 
 interface Directory {
   /** Map file name to module id. */
@@ -55,7 +55,12 @@ export class VirtualFS {
       }
 
       for (const [fileName, moduleId] of dir.files) {
-        console.log(`${spacer}${fileName}`)
+        let name = fileName
+
+        // Highlight index files.
+        if (/index\.tsx?/.test(fileName)) name = green(fileName)
+
+        console.log(`${spacer}${name}`)
       }
     }
 
