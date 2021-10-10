@@ -10,6 +10,12 @@ interface Directory {
 
 type WalkHandle = (dir: Directory, folderName: string) => void
 
+type FormatterFn = (
+  type: "folder" | "file",
+  name: string,
+  moduleId?: string
+) => string
+
 const createDirectory = (): Directory => ({
   files: new Map(),
   folders: new Map(),
@@ -44,23 +50,31 @@ export class VirtualFS {
     return dir
   }
 
-  printTree(root = this.root) {
+  printTree(root = this.root, formatter?: FormatterFn) {
     function traverse(dir: Directory, depth = 0) {
       const spacer = " ".repeat(depth * 2)
 
       for (const [folderName, directory] of dir.folders) {
-        console.log(yellow(`${spacer}${folderName}/`))
+        let displayName = folderName
+
+        // Format the directory name.
+        if (formatter) displayName = formatter("folder", folderName)
+
+        console.log(yellow(`${spacer}${displayName}/`))
 
         traverse(directory, depth + 1)
       }
 
       for (const [fileName, moduleId] of dir.files) {
-        let name = fileName
+        let displayName = fileName
 
-        // Highlight index files.
-        if (/index\.tsx?/.test(fileName)) name = green(fileName)
+        // Format the file name.
+        if (formatter) displayName = formatter("file", fileName, moduleId)
 
-        console.log(`${spacer}${name}`)
+        // Highlight index files in green.
+        if (/index\.tsx?/.test(fileName)) displayName = green(fileName)
+
+        console.log(`${spacer}${displayName}`)
       }
     }
 

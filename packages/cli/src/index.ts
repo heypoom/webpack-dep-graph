@@ -4,6 +4,7 @@ import { red, gray, yellow, green, bold } from "colorette"
 import graphviz from "graphviz"
 
 import { VirtualFS } from "@analyzer"
+import filesize from "filesize"
 
 interface Module {
   id: string
@@ -341,7 +342,14 @@ async function main() {
 
   getCircularDeps(depGraph)
 
-  vfs.printTree()
+  vfs.printTree(vfs.root, (type, name, id) => {
+    if (type === "file" && id) {
+      const node = graph.nodesById.get(id)
+      if (node) return `${name} (${filesize(node.sizeInBytes)})`
+    }
+
+    return name
+  })
 }
 
 main()
