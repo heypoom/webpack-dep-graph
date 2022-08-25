@@ -1,0 +1,26 @@
+.app-graph, .app-cytoscape-container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background: #111;
+    font-weight: 400;
+}
+
+node {
+	background-color: #111;
+	// label: data(id);
+	color: #b8e994;
+	border-color: #b8e994;
+	border-width: 2;
+	font-weight: 400;
+	text-valign: center;
+	text-halign: center;
+}
+
+edge {
+	width: 2;
+	line-color: #757575;
+	target-arrow-color: #757575;
+	target-arrow-shape: triangle;
+	curve-style: bezier;
+}
