@@ -1,26 +1,29 @@
 {
-  "name": "dep-graph",
-  "version": "0.0.0",
+  "name": "dep-graph-view",
+  "version": "0.1.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "serve": "vite preview"
+    "build": "hexo generate",
+    "clean": "hexo clean",
+    "deploy": "hexo deploy",
+    "server": "hexo server"
   },
   "dependencies": {
     "cytoscape": "^3.22.1",
-    "lodash": "^4.17.21",
-    "preact": "^10.10.6",
-    "react": "^18.2.0",
-    "react-cytoscapejs": "^1.2.1",
-    "react-dom": "^18.2.0"
+    "hexo": "^6.2.0",
+    "hexo-generator-archive": "^1.0.0",
+    "hexo-generator-category": "^1.0.0",
+    "hexo-generator-index": "^2.0.0",
+    "hexo-generator-tag": "^1.0.0",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^5.0.0",
+    "hexo-renderer-stylus": "^2.1.0",
+    "hexo-server": "^3.0.0",
+    "hexo-theme-landscape": "^0.0.3"
   },
   "devDependencies": {
-    "@preact/preset-vite": "^2.3.0",
-    "@types/react": "^18.0.17",
-    "@types/react-cytoscapejs": "^1.2.2",
-    "typescript": "^4.7.4",
-    "vite": "^3.0.9",
-    "vite-tsconfig-paths": "^3.3.15"
+    "@types/cytoscape": "^3.19.7",
+    "hexo": "^6.2.0",
+    "hexo-cli": "^4.3.0"
   },
   "license": "MIT"
 }
