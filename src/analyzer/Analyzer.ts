@@ -59,16 +59,4 @@ export class Analyzer {
 
         return this.analyzerContext
 	}
-
-	// get dependencies() {
-	// 	console.log(
-	// 		"src/analyzer/Analyzer.ts:45",
-	// 		this.analyzerContext.graph.dependenciesById.size
-	// 	)
-	// 	return getDependencyMap(this.analyzerContext.graph)
-	// }
-
-	// get circularImports() {
-	// 	return getCircularImports(this.dependencies)
-	// }
 }
