@@ -3,34 +3,35 @@
   "private": true,
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register ./packages/cli/src/index.ts"
+    "start": "ts-node ./src/index.ts",
+    "debug": "ts-node ./src/index.ts",
+    "webpack": "webpack --config webpack.config.js",
+    "analyze": "webpack --config webpack.config.js && ts-node dist/bundle.js ../webpack-stats.json",
+    "b": "tsc --build tsconfig.json && ts-node dist/out-tsc/index.js",
+    "log": "node --prof dist/out-tsc/index.js ",
+    "lint:ts": "tslint -c tslint.json -p ./tsconfig.json"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/graphviz": "^0.0.34",
-    "@types/lodash": "^4.14.175",
-    "@types/node": "^16.10.3",
-    "@types/toposort": "^2.0.3",
-    "husky": "^7.0.2",
-    "lerna": "^4.0.0",
+    "@types/node": "^16.11.52",
     "prettier": "^2.4.1",
-    "ts-node": "^10.2.1",
-    "tsconfig-paths": "^3.11.0",
-    "typescript": "^4.4.3"
+    "ts-loader": "^9.3.1",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   },
   "dependencies": {
     "@types/uuid": "^8.3.1",
-    "colorette": "^2.0.16",
+    "colorette": "^2.0.19",
     "filesize": "^8.0.3",
     "graphviz": "^0.0.9",
-    "lodash": "^4.17.21",
-    "toposort": "^2.0.2",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "tty-browserify": "^0.0.1",
     "uuid": "^8.3.2"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+  }
 }

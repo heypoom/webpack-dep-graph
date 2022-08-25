@@ -1,9 +1,0 @@
-{
-  "name": "webpack-dep-cli",
-  "version": "1.0.0",
-  "main": "src/index.ts",
-  "license": "MIT",
-  "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/index.ts"
-  }
-}

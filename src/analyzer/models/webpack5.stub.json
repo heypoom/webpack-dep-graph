@@ -1,0 +1,264 @@
+{
+    "errors": [],
+    "warnings": [
+        "./node_modules/@angular/core/esm5/core.js\n6570:15-36 Critical dependency: the request of a dependency is an expression\n    at ImportLazyContextDependency.getWarnings (/home/user/coding/wallet/node_modules/webpack/lib/dependencies/ContextDependency.js:39:18)\n    at Compilation.reportDependencyErrorsAndWarnings (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:702:24)\n    at Compilation.finish (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:565:9)\n    at applyPluginsParallel.err (/home/user/coding/wallet/node_modules/webpack/lib/Compiler.js:502:17)\n    at /home/user/coding/wallet/node_modules/webpack/node_modules/tapable/lib/Tapable.js:289:11\n    at _addModuleChain (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:511:11)\n    at processModuleDependencies.err (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:481:14)\n    at processTicksAndRejections (internal/process/task_queues.js:79:9)\n @ ./node_modules/@angular/core/esm5/core.js\n @ ./src/app/app.module.ts\n @ ./src/app/main.ts",
+        "./node_modules/@angular/core/esm5/core.js\n6590:15-102 Critical dependency: the request of a dependency is an expression\n    at ImportLazyContextDependency.getWarnings (/home/user/coding/wallet/node_modules/webpack/lib/dependencies/ContextDependency.js:39:18)\n    at Compilation.reportDependencyErrorsAndWarnings (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:702:24)\n    at Compilation.finish (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:565:9)\n    at applyPluginsParallel.err (/home/user/coding/wallet/node_modules/webpack/lib/Compiler.js:502:17)\n    at /home/user/coding/wallet/node_modules/webpack/node_modules/tapable/lib/Tapable.js:289:11\n    at _addModuleChain (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:511:11)\n    at processModuleDependencies.err (/home/user/coding/wallet/node_modules/webpack/lib/Compilation.js:481:14)\n    at processTicksAndRejections (internal/process/task_queues.js:79:9)\n @ ./node_modules/@angular/core/esm5/core.js\n @ ./src/app/app.module.ts\n @ ./src/app/main.ts"
+    ],
+    "version": "3.12.0",
+    "hash": "0fa555d52fd3aa726203",
+    "time": 14854,
+    "publicPath": "build/",
+    "assetsByChunkName": {
+        "main": [
+        "main.js",
+        "main.js.map"
+        ],
+        "vendor": [
+        "vendor.js",
+        "vendor.js.map"
+        ]
+    },
+    "assets": [
+        {
+        "name": "0.js",
+        "size": 4907,
+        "chunks": [
+            0
+        ],
+        "chunkNames": [],
+        "emitted": true
+        },
+        {
+        "name": "main.js",
+        "size": 3084789,
+        "chunks": [
+            8
+        ],
+        "chunkNames": [
+            "main"
+        ],
+        "emitted": true,
+        "isOverSizeLimit": true
+        },
+        {
+        "name": "vendor.js",
+        "size": 16006128,
+        "chunks": [
+            9
+        ],
+        "chunkNames": [
+            "vendor"
+        ],
+        "emitted": true,
+        "isOverSizeLimit": true
+        }
+    ],
+    "filteredAssets": 0,
+    "entrypoints": {
+        "main": {
+        "chunks": [
+            9,
+            8
+        ],
+        "assets": [
+            "vendor.js",
+            "vendor.js.map",
+            "main.js",
+            "main.js.map"
+        ],
+        "isOverSizeLimit": true
+        }
+    },
+    "chunks": [
+        {
+            "id": 0,
+            "rendered": true,
+            "initial": false,
+            "entry": false,
+            "extraAsync": false,
+            "size": 4465,
+            "names": [],
+            "files": [
+                "0.js",
+                "0.js.map"
+            ],
+            "hash": "6a6a7e63a636670f7205",
+            "parents": [
+                6,
+                7,
+                8
+            ],
+            "modules": [
+              {
+                "id": 2020,
+                "identifier": "/home/user/coding/wallet/node_modules/qr-code-component-ng/dist/esm/es5/polyfills/url.js",
+                "name": "./node_modules/qr-code-component-ng/dist/esm/es5/polyfills/url.js",
+                "index": 2434,
+                "index2": 2430,
+                "size": 4465,
+                "cacheable": true,
+                "built": true,
+                "optional": false,
+                "prefetched": false,
+                "chunks": [
+                    0
+                ],
+                "assets": [],
+                "issuer": "/home/user/coding/wallet/node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                "issuerId": 1014,
+                "issuerName": "./node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                "failed": false,
+                "errors": 0,
+                "warnings": 0,
+                "reasons": [
+                    {
+                        "moduleId": 1014,
+                        "moduleIdentifier": "/home/user/coding/wallet/node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                        "module": "./node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                        "moduleName": "./node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                        "type": "import()",
+                        "userRequest": "./polyfills/url.js",
+                        "loc": "8:7170-7198"
+                    }
+                ],
+                "usedExports": true,
+                "providedExports": [
+                    "applyPolyfill"
+                ],
+                "optimizationBailout": [
+                    "ModuleConcatenation bailout: Module uses injected variables (global)"
+                ],
+                "depth": 4,
+                "source": "export function applyPolyfill(window, document) {/*!\nurl-polyfill, 1.0.14\nhttps://github.com/lifaon74/url-polyfill\nMIT Licensed\n*/\n(function(e){var t=function(){try{return!!Symbol.iterator}catch(e){return false}};var n=t();var r=function(e){var t={next:function(){var t=e.shift();return{done:t===void 0,value:t}}};if(n){t[Symbol.iterator]=function(){return t}}return t};var i=function(e){return encodeURIComponent(e).replace(/%20/g,\"+\")};var o=function(e){return decodeURIComponent(e).replace(/\\+/g,\" \")};var a=function(){var t=function(e){Object.defineProperty(this,\"_entries\",{value:{}});if(typeof e===\"string\"){if(e!==\"\"){e=e.replace(/^\\?/,\"\");var n=e.split(\"&\");var r;for(var i=0;i<n.length;i++){r=n[i].split(\"=\");this.append(o(r[0]),r.length>1?o(r[1]):\"\")}}}else if(e instanceof t){var a=this;e.forEach(function(e,t){a.append(e,t)})}};var a=t.prototype;a.append=function(e,t){if(e in this._entries){this._entries[e].push(t.toString())}else{this._entries[e]=[t.toString()]}};a.delete=function(e){delete this._entries[e]};a.get=function(e){return e in this._entries?this._entries[e][0]:null};a.getAll=function(e){return e in this._entries?this._entries[e].slice(0):[]};a.has=function(e){return e in this._entries};a.set=function(e,t){this._entries[e]=[t.toString()]};a.forEach=function(e,t){var n;for(var r in this._entries){if(this._entries.hasOwnProperty(r)){n=this._entries[r];for(var i=0;i<n.length;i++){e.call(t,n[i],r,this)}}}};a.keys=function(){var e=[];this.forEach(function(t,n){e.push(n)});return r(e)};a.values=function(){var e=[];this.forEach(function(t){e.push(t)});return r(e)};a.entries=function(){var e=[];this.forEach(function(t,n){e.push([n,t])});return r(e)};if(n){a[Symbol.iterator]=a.entries}a.toString=function(){var e=[];this.forEach(function(t,n){e.push(i(n)+\"=\"+i(t))});return e.join(\"&\")};e.URLSearchParams=t};if(!(\"URLSearchParams\"in e)||new URLSearchParams(\"?a=1\").toString()!==\"a=1\"){a()}})(typeof global!==\"undefined\"?global:typeof window!==\"undefined\"?window:typeof self!==\"undefined\"?self:this);(function(e){var t=function(){try{var e=new URL(\"b\",\"http://a\");e.pathname=\"c%20d\";return e.href===\"http://a/c%20d\"&&e.searchParams}catch(e){return false}};var n=function(){var t=e.URL;var n=function(e,t){if(typeof e!==\"string\")e=String(e);var n=document.implementation.createHTMLDocument(\"\");window.doc=n;if(t){var r=n.createElement(\"base\");r.href=t;n.head.appendChild(r)}var i=n.createElement(\"a\");i.href=e;n.body.appendChild(i);i.href=i.href;if(i.protocol===\":\"||!/:/.test(i.href)){throw new TypeError(\"Invalid URL\")}Object.defineProperty(this,\"_anchorElement\",{value:i})};var r=n.prototype;var i=function(e){Object.defineProperty(r,e,{get:function(){return this._anchorElement[e]},set:function(t){this._anchorElement[e]=t},enumerable:true})};[\"hash\",\"host\",\"hostname\",\"port\",\"protocol\",\"search\"].forEach(function(e){i(e)});Object.defineProperties(r,{toString:{get:function(){var e=this;return function(){return e.href}}},href:{get:function(){return this._anchorElement.href.replace(/\\?$/,\"\")},set:function(e){this._anchorElement.href=e},enumerable:true},pathname:{get:function(){return this._anchorElement.pathname.replace(/(^\\/?)/,\"/\")},set:function(e){this._anchorElement.pathname=e},enumerable:true},origin:{get:function(){var e={\"http:\":80,\"https:\":443,\"ftp:\":21}[this._anchorElement.protocol];var t=this._anchorElement.port!=e&&this._anchorElement.port!==\"\";return this._anchorElement.protocol+\"//\"+this._anchorElement.hostname+(t?\":\"+this._anchorElement.port:\"\")},enumerable:true},password:{get:function(){return\"\"},set:function(e){},enumerable:true},username:{get:function(){return\"\"},set:function(e){},enumerable:true},searchParams:{get:function(){var e=new URLSearchParams(this.search);var t=this;[\"append\",\"delete\",\"set\"].forEach(function(n){var r=e[n];e[n]=function(){r.apply(e,arguments);t.search=e.toString()}});return e},enumerable:true}});n.createObjectURL=function(e){return t.createObjectURL.apply(t,arguments)};n.revokeObjectURL=function(e){return t.revokeObjectURL.apply(t,arguments)};e.URL=n};if(!t()){n()}if(e.location!==void 0&&!(\"origin\"in e.location)){var r=function(){return e.location.protocol+\"//\"+e.location.hostname+(e.location.port?\":\"+e.location.port:\"\")};try{Object.defineProperty(e.location,\"origin\",{get:r,enumerable:true})}catch(t){setInterval(function(){e.location.origin=r()},100)}}})(typeof global!==\"undefined\"?global:typeof window!==\"undefined\"?window:typeof self!==\"undefined\"?self:this);\n}"
+              }
+            ],
+            "filteredModules": 0,
+            "origins": [
+                {
+                    "moduleId": 1014,
+                    "module": "/home/user/coding/wallet/node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                    "moduleIdentifier": "/home/user/coding/wallet/node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                    "moduleName": "./node_modules/qr-code-component-ng/dist/esm/es5/bp-qr-code.core.js",
+                    "loc": "8:7170-7198",
+                    "name": null,
+                    "reasons": []
+                }
+            ]
+        }
+    ],
+    "modules": [
+        {
+            "id": 0,
+            "identifier": "/home/user/coding/wallet/node_modules/@angular/core/esm5/core.js",
+            "name": "./node_modules/@angular/core/esm5/core.js",
+            "index": 4,
+            "index2": 42,
+            "size": 628599,
+            "cacheable": true,
+            "built": true,
+            "optional": false,
+            "prefetched": false,
+            "chunks": [
+                9
+            ],
+            "assets": [],
+            "issuer": "/home/user/coding/wallet/node_modules/@ionic/app-scripts/dist/webpack/loader.js!/home/user/coding/wallet/src/app/app.module.ts",
+            "issuerId": null,
+            "issuerName": "./src/app/app.module.ts",
+            "failed": false,
+            "errors": 0,
+            "warnings": 0,
+            "reasons": [
+                {
+                    "moduleId": 5,
+                    "moduleIdentifier": "/home/user/coding/wallet/node_modules/ionic-angular/index.js 0c7de4b5e9402e929704ded13e8fba9a",
+                    "module": "./node_modules/ionic-angular/index.js + 191 modules",
+                    "moduleName": "./node_modules/ionic-angular/index.js + 191 modules",
+                    "type": "harmony import",
+                    "userRequest": "@angular/core",
+                    "loc": "11:0-43"
+                },
+                {
+                    "moduleId": 5,
+                    "moduleIdentifier": "/home/user/coding/wallet/node_modules/ionic-angular/index.js 0c7de4b5e9402e929704ded13e8fba9a",
+                    "module": "./node_modules/ionic-angular/index.js + 191 modules",
+                    "moduleName": "./node_modules/ionic-angular/index.js + 191 modules",
+                    "type": "harmony import",
+                    "userRequest": "@angular/core",
+                    "loc": "1:0-47"
+                },
+                {
+                    "moduleId": 5,
+                    "moduleIdentifier": "/home/user/coding/wallet/node_modules/ionic-angular/index.js 0c7de4b5e9402e929704ded13e8fba9a",
+                    "module": "./node_modules/ionic-angular/index.js + 191 modules",
+                    "moduleName": "./node_modules/ionic-angular/index.js + 191 modules",
+                    "type": "harmony import",
+                    "userRequest": "@angular/core",
+                    "loc": "1:0-73"
+                }
+            ],
+            "usedExports": true,
+            "providedExports": [
+                "createPlatform",
+                "assertPlatform",
+                "destroyPlatform",
+                "getPlatform",
+                "PlatformRef",
+                "ApplicationRef",
+                "ɵy",
+                "ɵbc",
+                "ɵa",
+                "ɵd",
+                "ɵba",
+                "ɵbb"
+            ],
+            "optimizationBailout": [
+                "ModuleConcatenation bailout: Module uses injected variables (global)"
+            ],
+            "depth": 2,
+            "source": "@class */ (function () {\n    function InjectionToken(_desc) {\n        this._desc = _desc;\n        /**\n         * \\@internal\n         */\n        this.ngMetadataName = 'InjectionToken';\n    }\n    /**\n     * @return {?}\n     */\n    InjectionToken.prototype.toString = /**\n     * @return {?}\n     */\n    function () { return \"InjectionToken \" + this._desc; };\n    return InjectionToken;\n}());\n\n/**\n * @fileoverview added by tsickle\n * @suppress {checkTypes} checked by tsc\n */\n/**\n * @license\n * Copyright Google Inc. All Rights Reserved.\n *\n * Use of this source code is governed by an MIT-style license that can be\n * found in the LICENSE file at https://angular.io/license\n */\n/**\n * An interface implemented by all Angular type decorators, which allows them to be used as ES7\n * decorators as well as\n * Angular DSL syntax.\n *\n * ES7 syntax:\n *\n * ```\n * \\@ng.Component({...})\n * class MyClass {...}\n ɵNOT_FOUND_CHECK_ONLY_ELEMENT_INJECTOR, defineComponent as ɵdefineComponent, detectChanges as ɵdetectChanges, renderComponent as ɵrenderComponent, containerStart as ɵC, directive as ɵD, elementStart as ɵE, text as ɵT, viewStart as ɵV, bind as ɵb, bind1 as ɵb1, containerEnd as ɵc, containerRefreshStart as ɵcR, containerRefreshEnd as ɵcr, elementEnd as ɵe, elementProperty as ɵp, elementStyle as ɵs, textBinding as ɵt, viewEnd as ɵv, registerModuleFactory as ɵregisterModuleFactory, EMPTY_ARRAY as ɵEMPTY_ARRAY, EMPTY_MAP as ɵEMPTY_MAP, anchorDef as ɵand, createComponentFactory as ɵccf, createNgModuleFactory as ɵcmf, createRendererType2 as ɵcrt, directiveDef as ɵdid, elementDef as ɵeld, elementEventFullName as ɵelementEventFullName, getComponentViewDefinitionFactory as ɵgetComponentViewDefinitionFactory, inlineInterpolate as ɵinlineInterpolate, interpolate as ɵinterpolate, moduleDef as ɵmod, moduleProvideDef as ɵmpd, ngContentDef as ɵncd, nodeValue as ɵnov, pipeDef as ɵpid, providerDef as ɵprd, pureArrayDef as ɵpad, pureObjectDef as ɵpod, purePipeDef as ɵppd, queryDef as ɵqud, textDef as ɵted, unwrapValue as ɵunv, viewDef as ɵvid, AUTO_STYLE, trigger$$1 as trigger, animate$$1 as animate, group$$1 as group, sequence$$1 as sequence, style$$1 as style, state$$1 as state, keyframes$$1 as keyframes, transition$$1 as transition, animate$1 as ɵbf, group$1 as ɵbg, keyframes$1 as ɵbk, sequence$1 as ɵbh, state$1 as ɵbj, style$1 as ɵbi, transition$1 as ɵbl, trigger$1 as ɵbe, _iterableDiffersFactory as ɵn, _keyValueDiffersFactory as ɵo, _localeFactory as ɵq, _appIdRandomProviderFactory as ɵi, defaultIterableDiffers as ɵj, defaultKeyValueDiffers as ɵk, DefaultIterableDifferFactory as ɵl, DefaultKeyValueDifferFactory as ɵm, ReflectiveInjector_ as ɵf, ReflectiveDependency as ɵg, resolveReflectiveProviders as ɵh, wtfEnabled as ɵr, createScope as ɵw, detectWTF as ɵu, endTimeRange as ɵz, leave as ɵx, startTimeRange as ɵy, stringify$1 as ɵbc, makeParamDecorator as ɵa, makePropDecorator as ɵd, _def as ɵba, DebugContext as ɵbb };\n//# sourceMappingURL=core.js.map\n"
+        },
+        {
+            "id": 1951,
+            "identifier": "/home/user/coding/wallet/node_modules/iconv-lite/lib/index.js",
+            "name": "./node_modules/iconv-lite/lib/index.js",
+            "index": 2117,
+            "index2": 2129,
+            "size": 5120,
+            "cacheable": true,
+            "built": true,
+            "optional": false,
+            "prefetched": false,
+            "chunks": [
+                9
+            ],
+            "assets": [],
+            "issuer": "/home/user/coding/wallet/node_modules/encoding/lib/encoding.js",
+            "issuerId": 366,
+            "issuerName": "./node_modules/encoding/lib/encoding.js",
+            "failed": false,
+            "errors": 0,
+            "warnings": 0,
+            "reasons": [
+              {
+                "moduleId": 366,
+                "moduleIdentifier": "/home/user/coding/wallet/node_modules/encoding/lib/encoding.js",
+                "module": "./node_modules/encoding/lib/encoding.js",
+                "moduleName": "./node_modules/encoding/lib/encoding.js",
+                "type": "cjs require",
+                "userRequest": "iconv-lite",
+                "loc": "3:16-37"
+              }
+            ],
+            "usedExports": true,
+            "providedExports": null,
+            "optimizationBailout": [
+              "ModuleConcatenation bailout: Module is not an ECMAScript module"
+            ],
+            "depth": 6,
+            "source": "\"use strict\";\n\n// Some environments don't have global Buffer (e.g. React Native).\n// Solution would be installing npm modules \"buffer\" and \"stream\" explicitly.\nvar Buffer = require(\"safer-buffer\").Buffer;\n\nvar bomHandling = require(\"./bom-handling\"),\n    iconv = module.exports;\n\n// All codecs and aliases are kept here, keyed by encoding name/alias.\n// They are lazy loaded in `iconv.getCodec` from `encodings/index.js`.\niconv.encodings = null;\n\n// Characters emitted in case of e       }\n    }\n}\n\niconv._canonicalizeEncoding = function(encoding) {\n    // Canonicalize encoding name: strip all non-alphanumeric chars and appended year.\n    return (''+encoding).toLowerCase().replace(/:\\d{4}$|[^0-9a-z]/g, \"\");\n}\n\niconv.getEncoder = function getEncoder(encoding, options) {\n    var codec = iconv.getCodec(encoding),\n        encoder = new codec.encoder(options, codec);\n\n    if (codec.bomAware && options && options.addBOM)\n        encoder = new bomHandling.PrependBOM(encoder, options);\n\n    return encoder;\n}\n\niconv.getDecoder = function getDecoder(encoding, options) {\n    var codec = iconv.getCodec(encoding),\n        decoder = new codec.decoder(options, codec);\n\n    if (codec.bomAware && !(options && options.stripBOM === false))\n        decoder = new bomHandling.StripBOM(decoder, options);\n\n    return decoder;\n}\n\n\n// Load extensions in Node. All of them are omitted in Browserify build via 'browser' field in package.json.\nvar nodeVer = typeof process !== 'undefined' && process.versions && process.versions.node;\nif (nodeVer) {\n\n    // Load streaming support in Node v0.10+\n    var nodeVerArr = nodeVer.split(\".\").map(Number);\n    if (nodeVerArr[0] > 0 || nodeVerArr[1] >= 10) {\n        require(\"./streams\")(iconv);\n    }\n\n    // Load Node primitive extensions.\n    require(\"./extend-node\")(iconv);\n}\n\nif (\"Ā\" != \"\\u0100\") {\n    console.error(\"iconv-lite warning: javascript files use encoding different from utf-8. See https://github.com/ashtuchkin/iconv-lite/wiki/Javascript-source-file-encodings for more info.\");\n}\n"
+          }
+    ],
+    "filteredModules": 0,
+    "children": []
+}
