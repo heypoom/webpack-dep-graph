@@ -6,9 +6,11 @@ node_modules/
 *.tsbuildinfo
 .env*
 .vscode/
+dist/
 
 webpack-stats.json
 deps.json
 circular.json
-deps.dot
+cytoscape.json
+graph.dot
 deps.png

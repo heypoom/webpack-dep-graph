@@ -5,7 +5,7 @@ import {
 } from "../models/webpack5.model"
 // import { WebpackModule, WebpackReason } from "../models/WebpackStat"
 import { isAppSourcesPath } from "../parsers/filterModule"
-import { resolvePath } from "../parsers/moduleParser"
+import { resolvePathPlus } from "../parsers/moduleParser"
 
 function getModuleTypes(webpackModules: IWebpackStatsV5Module[]) {
 	reasonTypes: webpackModules
@@ -32,7 +32,7 @@ export function extractUsages(context: AnalyzerContext) {
 			issuerPath: item.issuerName,
 			reasons: item.reasons.map((item) => ({
 				...item,
-				resolvedModulePath: resolvePath(item.moduleName),
+				resolvedModulePath: resolvePathPlus(item.moduleName),
 			})),
 		}
 	})
@@ -41,7 +41,7 @@ export function extractUsages(context: AnalyzerContext) {
 		const summary = { imports: 0, exports: 0, issuers: 0 }
 		const resolvedDependents: Map<string, boolean> = new Map()
 
-		const relativePath = resolvePath(webpackModule.name)
+		const relativePath = resolvePathPlus(webpackModule.name)
 
 		const module = graph.byRelativePath(relativePath)
 		if (!module) throw new Error("cannot lookup by relative path")
@@ -67,7 +67,7 @@ export function extractUsages(context: AnalyzerContext) {
 				continue
 			}
 
-			const moduleName = resolvePath(reason.resolvedModulePath)
+			const moduleName = resolvePathPlus(reason.resolvedModulePath)
 
 			// Mark dependent as resolved, so we don't need to resolve multiple times.
 			if (resolvedDependents.has(moduleName)) {

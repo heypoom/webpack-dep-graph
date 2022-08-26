@@ -1,0 +1,34 @@
+{
+	"compileOnSave": false,
+	"files": [
+		"src/app.ts",
+
+	],
+	"include": [
+		"./src/*.ts",
+		"./src/**/*.ts"
+    ],
+	"exclude": [
+	],
+	"compilerOptions": {
+		"baseUrl": "./",
+        "declaration": false,
+		"module": "ES2020",
+		"target": "es5",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"downlevelIteration": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"alwaysStrict": true,
+		"typeRoots": [
+			"node_modules/@types"
+		],
+		"lib": [
+			"es2020",
+			"dom"
+		],
+		"noImplicitAny": true,
+		"allowJs": true,
+	}
+}

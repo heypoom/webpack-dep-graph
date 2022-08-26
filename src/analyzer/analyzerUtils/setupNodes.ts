@@ -1,13 +1,13 @@
 import { AnalyzerContext } from "../models/AnalyzerContext"
-import { resolvePath } from "../parsers/moduleParser"
-import { getAbsolutePath, fileNameFromPath } from "../parsers/pathParser"
+import { resolvePathPlus } from "../parsers/moduleParser"
+import { parseAbsolutePath, fileNameFromPath } from "../parsers/pathParser"
 import { v4 } from "uuid"
 
 const debug = (text: string) => console.debug(text)
 
 export function createModuleNodes(context: AnalyzerContext) {
-  const { graph, vfs, projectRoot, webpackModules } = context
-console.log('src/analyzer/analyzerUtils/setupNodes.ts', context.graph.dependenciesById.size)
+  const { graph, vfs, webpackModules } = context
+// console.log('src/analyzer/analyzerUtils/setupNodes.ts', context.graph.dependenciesById.size)
   const startTime = Date.now()
   debug(`located ${webpackModules.length} modules from this build.`)
 
@@ -15,8 +15,8 @@ console.log('src/analyzer/analyzerUtils/setupNodes.ts', context.graph.dependenci
   for (const module of webpackModules) {
     const id = v4()
 
-    const relativePath = resolvePath(module.name)
-    const absolutePath = getAbsolutePath(module, projectRoot)
+    const relativePath = resolvePathPlus(module.name)
+    const absolutePath = parseAbsolutePath(module)
 
     graph.nodeIdByRelativePath.set(relativePath, id)
 

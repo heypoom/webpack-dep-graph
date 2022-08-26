@@ -1,7 +1,7 @@
 import { AnalyzerConfig, AnalyzerContext } from "./models/AnalyzerContext"
 import { ModuleGraph } from "./ModuleGraph"
 import { isAppSourcesPath } from "./parsers/filterModule"
-import { getProjectRoot } from "./parsers/projectRoot"
+import { getAppRootPath } from "./parsers/projectRoot"
 import { VirtualFS } from "./vfs/VirtualFS"
 import { IWebpackStatsV5, IWebpackStatsV5Module } from "./models/webpack5.model"
 import {
@@ -43,7 +43,7 @@ export class Analyzer {
 	analyze(): AnalyzerContext {
 		console.log("src/analyzer/Analyzer.ts:23", this.stat.modules.length)
 
-		const projectRoot = getProjectRoot(this.stat.modules)
+		const projectRoot = getAppRootPath(this.stat.modules)
 		if (projectRoot) this.config.projectRoot = projectRoot
 
 		console.log("src/analyzer/Analyzer.ts:27", this.getStatCount())

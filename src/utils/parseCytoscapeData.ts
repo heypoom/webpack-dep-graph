@@ -13,35 +13,70 @@ interface ICyEdgeDataDefinition {
 	[id: string]: any
 }
 
-function parseNode(id: string, label: string = ""): ICyElementDefinition {
-	return { data: { [id]: label } }
+function parseNode(data: {
+	id: string
+	label?: string
+}): ICyNodeDataDefinition {
+	return { [data.id]: data.label || "" }
 }
 
-function parseEdge(
-	id: string,
-	source: string,
-	target: string,
-	label: string = "",
-): ICyElementDefinition {
+function parseEdge(data: {
+	id: string
+	source: string
+	target: string
+	label?: string
+}): ICyEdgeDataDefinition {
 	return {
-		data: { [id]: label, source, target },
+		[data.id]: data.label || "",
+		source: data.source,
+		target: data.target,
 	}
 }
 
-export function parseElementDefinitions(
+function parseElementDefinition(
+	data: ICyNodeDataDefinition | ICyEdgeDataDefinition
+) {
+	return {
+		data: data,
+	}
+}
+
+export function parseEdgeDefinitions(
 	dependencyMap: Record<string, string[]>
 ): ICyElementDefinition[] {
+	let result: ICyElementDefinition[] = []
+	let edges: ICyEdgeDataDefinition[] = []
+	let edge: ICyEdgeDataDefinition
+	let dependenciesPaths: string[] = []
 
-    let result: ICyElementDefinition[] = []
+	for (const targetPath in dependencyMap) {
+		dependenciesPaths = dependencyMap[targetPath]
 
-    for (const targetPath in dependencyMap) {
-		const targetNode = parseNode(targetPath)
-
-		const dependenciesPaths = dependencyMap[targetPath]
 		for (const dependencyPath of dependenciesPaths) {
-			parseEdge(targetPath, dependencyPath, targetPath)
+			edge = parseEdge({
+				id: targetPath,
+				source: dependencyPath,
+				target: targetPath,
+			})
+
+			edges.push(edge)
 		}
 	}
 
-    return result
+	return result.concat(edges.map((item) => parseElementDefinition(item)))
+}
+
+export function parseNodeDefinitions(
+	dependencyMap: Record<string, string[]>
+): ICyElementDefinition[] {
+	let result: ICyElementDefinition[] = []
+	let nodes: ICyNodeDataDefinition[] = []
+	let node: ICyNodeDataDefinition
+
+	for (const targetPath in dependencyMap) {
+		node = parseNode({ id: targetPath })
+		nodes.push(node)
+	}
+
+	return result.concat(nodes.map((item) => parseElementDefinition(item)))
 }

@@ -6,11 +6,9 @@
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "debug": "ts-node ./src/index.ts",
+    "build": "tsc --build tsconfig.json && ts-node dist/out-tsc/index.js",
     "webpack": "webpack --config webpack.config.js",
-    "analyze": "webpack --config webpack.config.js && ts-node dist/bundle.js ../webpack-stats.json",
-    "b": "tsc --build tsconfig.json && ts-node dist/out-tsc/index.js",
-    "log": "node --prof dist/out-tsc/index.js ",
-    "lint:ts": "tslint -c tslint.json -p ./tsconfig.json"
+    "analyze": "webpack --config webpack.config.js && ts-node dist/bundle.js ../webpack-stats.json"
   },
   "author": "",
   "license": "MIT",

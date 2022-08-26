@@ -2,9 +2,8 @@ import fs from "fs"
 import { Analyzer } from "./analyzer/Analyzer"
 import { AnalyzerContext } from "./analyzer/models/AnalyzerContext"
 import { createDotGraph } from "./utils/dotGraph"
-import { parseElementDefinitions } from "./utils/parseCytoscapeData"
-
 import { loadWebpackStat } from "./utils/loadWebpackStat"
+import { parseEdgeDefinitions } from "./utils/parseCytoscapeData"
 
 const write = (path: string, json: unknown) =>
 	fs.writeFileSync(path, JSON.stringify(json, null, 2))
@@ -23,7 +22,7 @@ function main() {
 		console.log(`\n------- displaying file tree ------\n`)
 		// printFileTree(analyzerContext)
 		const dotGraph = createDotGraph(analyzerContext.dependencyMap)
-		const cytoscapeGraph = parseElementDefinitions(analyzerContext.dependencyMap)
+		const cytoscapeGraph = parseEdgeDefinitions(analyzerContext.dependencyMap)
 
         write("./deps.json", analyzerContext.dependencyMap)
 		write("./circular.json", analyzerContext.circularImports)

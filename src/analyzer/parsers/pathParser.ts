@@ -1,12 +1,16 @@
+import { logEmpty } from "../../utils/logger"
 import { IWebpackStatsV5Module } from "../models/webpack5.model"
-// import { WebpackModule } from "../models/WebpackStat"
-import { resolvePath } from "./moduleParser"
 
-export const getAbsolutePath = (module: IWebpackStatsV5Module, projectRoot: string) =>
-  resolvePath(module.identifier?.replace(projectRoot, ""))
+export function parseAbsolutePath(module: IWebpackStatsV5Module): string {
+	let path = module.identifier?.split("!")[1] || ""
 
-export const fileNameFromPath = (path: string) => {
-  const segments = path.split("/")
+	logEmpty("src/analyzer/parsers/pathParser.ts:6", module.name)
 
-  return segments[segments.length - 1]
+	return path
+}
+
+export function fileNameFromPath(path: string) {
+	const [name]: string[] = path.split("/").slice(-1)
+	logEmpty("src/analyzer/parsers/pathParser.ts:17", path)
+	return name
 }

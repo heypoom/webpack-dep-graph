@@ -1,11 +1,11 @@
-import fs from "fs"
+// import fs from "fs"
+import cytoscape from "cytoscape"
 import type {
 	EdgeDataDefinition,
 	ElementDefinition,
 	NodeDataDefinition,
 	Stylesheet,
 } from "cytoscape"
-import cytoscape from "cytoscape"
 const elements: ElementDefinition[] = []
 const cyStyle: Stylesheet[] = [
 	{
@@ -33,11 +33,11 @@ const cyStyle: Stylesheet[] = [
 	},
 ]
 
-function main() {
+function draw() {
 	const fileName = "cytoscape.json"
-	const statString = fs.readFileSync(fileName, "utf-8")
-	const elements: { data: NodeDataDefinition | EdgeDataDefinition }[] =
-		JSON.parse(statString)
+	// const statString = fs.readFileSync(fileName, "utf-8")
+	// const elements: { data: NodeDataDefinition | EdgeDataDefinition }[] =
+		// JSON.parse(statString)
 	// console.log(`\n------- loading ${statFileName} ------\n`)
 	const container: HTMLElement | null = document.querySelector(".app-view")
 
@@ -53,4 +53,36 @@ function main() {
 	}
 }
 
-main()
+function openFile() {
+	let file: File = null
+	const MAX_FILE_SIZE_BYTES = 1000 * 1000 * 10 // 10M
+	let content: string | ArrayBuffer = null
+	let fileReader: FileReader = new FileReader()
+    const inputFileDOMElem: HTMLInputElement = document.querySelector('#inputFileDOMElem')
+console.log('file open')
+	if (
+		inputFileDOMElem.files instanceof Array &&
+		inputFileDOMElem.files.length > 0
+	) {
+		// file selected
+		file = inputFileDOMElem.files[0]
+	}
+	if (
+		file instanceof File &&
+		// https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types
+		["text/json"].includes(file.type) &&
+		file.size <= MAX_FILE_SIZE_BYTES
+	) {
+		// get content
+		fileReader.onload = function (e) {
+			content = e?.target?.result
+			console.log("file content", content)
+		}
+
+		// fire content reading
+		fileReader.readAsText(file);
+		// fileReader.readAsArrayBuffer(file)
+	} else {
+		console.log("wrong file")
+	}
+}

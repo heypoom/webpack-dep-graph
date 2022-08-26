@@ -1,6 +1,27 @@
-<head> </head>
-<body>
-	<div class="app-graph">
-		<div class="app-cytoscape-container"></div>
-	</div>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>App</title>
+		<script type="module" src="./app.js"></script>
+	</head>
+	<body>
+        <input
+        id="id-file-input"
+        type="file"
+        accept=".json"
+        (change)="uploadFile()"
+        #inputFileDOMElem
+        [attr.disabled]="isDisabled ? 'disabled' : null">
+
+        <label
+            id="id-file-input-label"
+            for="inputFileDOMElem">
+            <div>Upload file</div>
+        </label>
+		<div class="app-graph">
+			<div class="app-cytoscape-container"></div>
+		</div>
+	</body>
+</html>

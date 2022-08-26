@@ -1,17 +1,28 @@
 import { IWebpackStatsV5Module } from "../models/webpack5.model"
 import { isAppSourcesPath } from "./filterModule"
 
-export function getProjectRoot(modules: IWebpackStatsV5Module[]) {
-  const refModule = modules.find(
-    (m) => isAppSourcesPath(m.name) && /node_modules/.test(m.issuer)
-  )
+/** @deprecated TODO remove unused code */
+export function getAppRootPath(modules: IWebpackStatsV5Module[]) {
+	let rootPath: string = ""
+	const appModule = modules.find(
+		(module: IWebpackStatsV5Module) =>
+			isAppSourcesPath(module.name) && /node_modules/.test(module.issuer)
+	)
 
-  if (!refModule) return null
+	if (appModule) {
+		rootPath =
+			appModule.issuer.split("node_modules")[0] ||
+			appModule.issuer.split("node_modules")[0] ||
+			""
+	}
 
-  const [projectRoot] = refModule.issuer.split("node_modules")
-  if (!projectRoot) return null
+	if (!rootPath) {
+		console.warn(
+			"src/analyzer/parsers/projectRoot.ts:19",
+			"EMPTY app root path!",
+			appModule.name
+		)
+	}
 
-  console.debug("absolute project root might be at", projectRoot)
-
-  return projectRoot
+    return rootPath
 }
