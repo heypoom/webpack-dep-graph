@@ -16,15 +16,15 @@ export function fromGraphml(xml: string): ElementCompact {
 }
 
 export function loadGraphml(fileName: string): { [key: string]: string } {
-	const statString = readFile(fileName)
+	const xml = readFile(fileName)
 
-	const stat: { [key: string]: string } = fromGraphml(statString)
+	const js: { [key: string]: string } = fromGraphml(xml)
 
-	return stat
+	return js
 }
 
 export function saveGraphml(fileName: string, data: { [key: string]: string }) {
-	const stat: string = toGraphml(data)
+	const xml: string = toGraphml(data)
 
-	writeFile(fileName, stat)
+	writeFile(fileName, xml)
 }
