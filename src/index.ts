@@ -1,12 +1,10 @@
-import fs from "fs"
 import { Analyzer } from "./analyzer/Analyzer"
 import { AnalyzerContext } from "./analyzer/models/AnalyzerContext"
-import { createDotGraph } from "./utils/dotGraph"
-import { loadWebpackStat } from "./utils/loadWebpackStat"
-import { parseEdgeDefinitions } from "./utils/parseCytoscapeData"
-
-const write = (path: string, json: unknown) =>
-	fs.writeFileSync(path, JSON.stringify(json, null, 2))
+import { createDotGraph, saveDot } from "./utils/dotGraph"
+import { loadWebpackStat } from "./utils/webpackStats"
+import { parseEdgeDefinitions, saveCytoscape } from "./utils/cytoscape"
+import { writeFile } from "./utils/files"
+import { loadGraphml, saveGraphml } from "./utils/graphml"
 
 function main() {
 	let analyzerContext: AnalyzerContext
@@ -14,6 +12,7 @@ function main() {
 	console.log(`\n------- loading ${statFileName} ------\n`)
 
 	const webpackStat = loadWebpackStat(statFileName)
+	const grapml = loadGraphml("1.graphml")
 
 	if (webpackStat) {
 		const analyzer = new Analyzer(webpackStat)
@@ -22,12 +21,15 @@ function main() {
 		console.log(`\n------- displaying file tree ------\n`)
 		// printFileTree(analyzerContext)
 		const dotGraph = createDotGraph(analyzerContext.dependencyMap)
-		const cytoscapeGraph = parseEdgeDefinitions(analyzerContext.dependencyMap)
+		const cytoscapeGraph = parseEdgeDefinitions(
+			analyzerContext.dependencyMap
+		)
 
-        write("./deps.json", analyzerContext.dependencyMap)
-		write("./circular.json", analyzerContext.circularImports)
-		write("./graph.dot", dotGraph)
-        write("./cytoscape.json", cytoscapeGraph)
+		saveGraphml("2.graphml", grapml)
+		saveCytoscape("./deps.json", analyzerContext.dependencyMap)
+		saveCytoscape("./circular.json", analyzerContext.circularImports)
+		saveCytoscape("./cytoscape.json", cytoscapeGraph)
+		saveDot("./graph.dot", dotGraph)
 	}
 }
 
