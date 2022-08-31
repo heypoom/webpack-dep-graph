@@ -1,6 +1,6 @@
 import { Analyzer } from "./analyzer/Analyzer"
 import { AnalyzerContext } from "./analyzer/models/AnalyzerContext"
-import { createDotGraph, saveDot } from "./utils/dotGraph"
+import { createDotGraph, saveGraphvizRenderedDot, saveGraphvizDotSimplified, saveGraphvizRenderedPng } from "./utils/dotGraph"
 import { loadWebpackStat } from "./utils/webpackStats"
 import { parseEdgeDefinitions, saveCytoscape } from "./utils/cytoscape"
 import { writeFile } from "./utils/files"
@@ -29,7 +29,9 @@ function main() {
 		saveCytoscape("./deps.json", analyzerContext.dependencyMap)
 		saveCytoscape("./circular.json", analyzerContext.circularImports)
 		saveCytoscape("./cytoscape.json", cytoscapeGraph)
-		saveDot("./graph.dot", dotGraph)
+		saveGraphvizRenderedDot(dotGraph, "./graph.dot")
+		saveGraphvizRenderedPng(dotGraph, "./graph.png")
+		saveGraphvizDotSimplified(dotGraph, "./graph_text.dot")
 	}
 }
 

@@ -1,10 +1,11 @@
-import { digraph } from "graphviz"
+import { digraph, Graph } from "graphviz"
 import { writeFile } from "./files"
 
+// https://renenyffenegger.ch/notes/tools/Graphviz/examples/index
 export function createDotGraph(
 	dependencyMap: Record<string, string[]>
-): string {
-	const g = digraph("G")
+): Graph {
+	const g: Graph = digraph("G")
 
 	for (const consumerPath in dependencyMap) {
 		const n = g.addNode(consumerPath, { color: "blue" })
@@ -15,10 +16,20 @@ export function createDotGraph(
 		}
 	}
 
-	return g.to_dot()
+	return g
 }
 
-export function saveDot(fileName: string, data: any) {
-	const json = JSON.stringify(data, null, 2)
-	writeFile(fileName, json)
+/** TODO fix */
+export function saveGraphvizRenderedDot(g: Graph, fileName: string = 'graph.dot'){
+    g.output( "dot", fileName );
+}
+
+/** !!! very long execution time */
+export function saveGraphvizRenderedPng(g: Graph, fileName: string = 'graph.png'){
+    g.output( "png", fileName );
+}
+
+export function saveGraphvizDotSimplified(g: Graph, fileName: string = 'graph_text.dot'){
+	// const json = JSON.stringify(data, null, 2)
+	writeFile(fileName, g.to_dot())  
 }

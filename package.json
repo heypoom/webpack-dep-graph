@@ -1,13 +1,13 @@
 {
   "name": "webpack-dep-graph",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "debug": "ts-node ./src/index.ts",
     "build": "tsc --build tsconfig.json && ts-node dist/out-tsc/index.js",
-    "webpack": "webpack --config webpack.config.js",
+    "webpack": "webpack --config webpack.config.js --stats",
     "analyze": "webpack --config webpack.config.js && ts-node dist/bundle.js ../webpack-stats.json"
   },
   "author": "",
